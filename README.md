@@ -16,6 +16,13 @@ Just install, no preferences. Require device jailbroken
 make do
 ```
 
+## [Note] Advanced thingy for development
+
+### Add SSH key for target deploy device
+```
+cat ~/.ssh/id_rsa.pub | ssh -p 22 root@192.168.1.21 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+```
+
 ## License
 
 Licensed under the MIT License, Copyright © 2020-present Hao Nguyen <hao.ict56@gmail.com>

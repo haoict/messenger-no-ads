@@ -3,7 +3,7 @@ TARGET = iphone::13.2:13.2
 DEBUG = 0
 THEOS_DEVICE_IP = 192.168.1.21
 
-INSTALL_TARGET_PROCESSES = Messenger
+INSTALL_TARGET_PROCESSES = LightSpeedApp Messenger
 
 include $(THEOS)/makefiles/common.mk
 
