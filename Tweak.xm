@@ -1,25 +1,20 @@
-@interface MSGThreadListDataSource : NSObject
-- (NSArray *)inboxRows;
-@end
-
 %hook MSGThreadListDataSource
-- (NSArray *)inboxRows {  
-  NSMutableArray *orig = [%orig mutableCopy];
-  
-  // start array from 1 because row 0 is stories row
-  // note: [array removeObject:id] won't work, had to use NSMutableIndexSet
-  NSMutableIndexSet *adsIndexes = [[NSMutableIndexSet alloc] init];
+- (NSArray *)inboxRows {
+  NSArray *orig = %orig;
+  NSMutableArray *rowsNoAds = [@[] mutableCopy];
+
+  // add orig's row 0 because it is stories row
+  // TODO: make preferences to have an option to remove stories row (some people want it)
+  [rowsNoAds addObject:orig[0]];
+
   for (int i = 1; i < [orig count]; i++) {
     NSArray *row = orig[i];
-    NSNumber *type = row[1];
-    if ([type intValue] == 2) {
-      [adsIndexes addIndex:i];
+    if ([row[1] intValue] != 2) {
+      [rowsNoAds addObject:row];
     }
   }
 
-  [orig removeObjectsAtIndexes:adsIndexes];
-
-  return orig;
+  return rowsNoAds;
 }
 %end
 

@@ -1,7 +1,7 @@
 Package: com.haoict.messengernoads
 Name: Messenger No Ads
 Depends: mobilesubstrate
-Version: 0.0.2
+Version: 1.0.0
 Architecture: iphoneos-arm
 Description: Hide Ads on Messenger app
 Maintainer: Hao Nguyen
