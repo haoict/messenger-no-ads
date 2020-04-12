@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>items</key>
+    <array>
+
+      <dict>
+        <key>cell</key>
+        <string>PSButtonCell</string>
+        <key>label</key>
+        <string>@haoict</string>
+        <key>cellClass</key>
+        <string>HBTwitterCell</string>
+        <key>label</key>
+        <string>Hao Nguyen</string>
+        <key>user</key>
+        <string>haoict</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.messengernoadspref</string>
+        <key>key</key>
+        <string>noads</string>
+        <key>label</key>
+        <string>No Ads</string>
+        <key>PostNotification</key>
+        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.messengernoadspref</string>
+        <key>key</key>
+        <string>removestoriesrow</string>
+        <key>label</key>
+        <string>Remove Stories Row</string>
+        <key>PostNotification</key>
+        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.messengernoadspref</string>
+        <key>key</key>
+        <string>disablereadreceipt</string>
+        <key>label</key>
+        <string>Disable Read Receipt</string>
+        <key>PostNotification</key>
+        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+      </dict>
+
+      <!-- Support Me -->
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Support Me</string>
+      </dict>
+      <dict>
+        <key>cellClass</key>
+        <string>HBLinkTableCell</string>
+        <key>label</key>
+        <string>Donation 💰</string>
+        <key>subtitle</key>
+        <string>Buy me a coffee</string>
+        <key>url</key>
+        <string>https://paypal.me/haoict</string>
+      </dict>
+      <dict>
+        <key>cellClass</key>
+        <string>HBLinkTableCell</string>
+        <key>label</key>
+        <string>Feature Request? ✨</string>
+        <key>subtitle</key>
+        <string>Send Me An Email With Your Request</string>
+        <key>url</key>
+        <string>mailto:hao.ict56@gmail.com?subject=Messenger%20No%20Ads%20Feature%20Request</string>
+      </dict>
+      <dict>
+        <key>cellClass</key>
+        <string>HBLinkTableCell</string>
+        <key>label</key>
+        <string>Source Code 👾</string>
+        <key>subtitle</key>
+        <string>Github</string>
+        <key>url</key>
+        <string>https://github.com/haoict/messenger-no-ads</string>
+      </dict>
+      <dict>
+        <key>cellClass</key>
+        <string>HBLinkTableCell</string>
+        <key>label</key>
+        <string>Found A Bug? 🐛</string>
+        <key>subtitle</key>
+        <string>Leave A Bug Report on Github</string>
+        <key>url</key>
+        <string>https://github.com/haoict/messenger-no-ads/issues/new</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>footerText</key>
+        <string>Messenger No Ads, Made With ❤️</string>
+        <key>isStaticText</key>
+        <true/>
+      </dict>
+
+    </array>
+    <key>title</key>
+    <string>Messenger No Ads</string>
+  </dict>
+</plist>
