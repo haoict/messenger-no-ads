@@ -1,52 +1,160 @@
 #import <Foundation/Foundation.h>
 #import <Cephei/HBPreferences.h>
+#include "Tweak.h"
 
-// Option Switches
 BOOL noads = YES;
 BOOL removestoriesrow = YES;
 BOOL disablereadreceipt = YES;
+BOOL disabletypingindicator = YES;
+BOOL disablepeopletab = YES;
 
-%group LSCore
+%group NoAdsNoStoriesRow
+  %hook MSGThreadListDataSource
+    - (NSArray *)inboxRows {
+      NSArray *orig = %orig;
+      NSMutableArray *resultRows = [@[] mutableCopy];
 
-%hook MSGThreadListDataSource
-- (NSArray *)inboxRows {
-  NSArray *orig = %orig;
-  NSMutableArray *resultRows = [@[] mutableCopy];
+      if (!removestoriesrow) {
+        [resultRows addObject:orig[0]];
+      }
 
-  // add orig's row 0 because it is stories row
-  // TODO: make preferences to have an option to remove stories row (some people want it)
-  if (!removestoriesrow) {
-    [resultRows addObject:orig[0]];
-  }
+      for (int i = 1; i < [orig count]; i++) {
+        NSArray *row = orig[i];
+        if (!noads || (noads && [row[1] intValue] != 2)) {
+          [resultRows addObject:row];
+        }
+      }
 
-  for (int i = 1; i < [orig count]; i++) {
-    NSArray *row = orig[i];
-    if (!noads || (noads && [row[1] intValue] != 2)) {
-      [resultRows addObject:row];
+      return resultRows;
     }
-  }
-
-  return resultRows;
-}
+  %end
 %end
 
-%hook LSMessageListViewController
-- (void)_sendReadReceiptIfNeeded {
-  if (!disablereadreceipt) {
-    %orig;
-  }
-  return;
-}
+%group DisableReadReceipt
+  %hook LSMessageListViewController
+    - (void)_sendReadReceiptIfNeeded {
+      return;
+    }
+  %end
 %end
 
+%group DisableTypingIndicator
+  %hook LSTextView
+    - (void)updateTextViewForTextChangedAnimated:(BOOL)arg1 {
+      [self updateSizeAnimated:arg1];
+      self.collapsed = false;
+      if (![self hasText] || [self.text length] == 1) {
+        [[%c(LSComposerViewController) sharedInstance] updateComposerBarState];
+      }
+
+      UILabel *placeholderLabel = MSHookIvar<UILabel *>(self, "_placeholderLabel");
+      if ([self hasText]) {
+        [[%c(LSComposerViewController) sharedInstance] setTextChangedSinceTextViewCollapsed:true];
+        placeholderLabel.text  = @"";
+      } else {
+        placeholderLabel.text  = @"Aa";
+      }
+    }
+  %end
+
+  %hook LSComposerViewController
+    static LSComposerViewController *__weak sharedInstance;
+
+    - (id)initWithMailbox:(id)arg1 mediaManager:(id)arg2 generatedImageManager:(id)arg3 audioSessionManager:(id)arg4 backgroundTaskManager:(id)arg5 composerTheme:(id)arg6 composerConfiguration:(id)arg7 threadViewContextUniqueIdentifier:(id)arg8 textInputContextIdentifier:(id)arg9 composerState:(id)arg10 composerExtendedSendBlock:(id)arg11 {
+      id original = %orig;
+      sharedInstance = original;
+      return original;
+    }
+
+    %new
+    + (id)sharedInstance {
+      return sharedInstance;
+    }
+  %end
 %end
+
+%group DisablePeopleTab
+  %hook UITabBarController
+    - (UITabBar *)tabBar {
+      UITabBar *orig = %orig;
+      orig.hidden = true;
+      return orig;
+    }
+  %end
+%end
+
+
+// %group Story
+//   %hook MBUIStoryViewerBucketModel 
+//     - (BOOL) hasUnread {
+//       return true;
+//     }
+//   %end
+
+//   %hook LSMediaViewController
+//     - (BOOL)canSaveMedia {
+//       return true;
+//     }
+//   %end
+
+//   %hook LSMediaPhotoViewController
+//     - (BOOL)canSaveMedia {
+//       return true;
+//     }
+//   %end
+
+//   %hook LSMediaVideoViewController
+//     - (BOOL)canSaveMedia {
+//       return true;
+//     }
+//   %end
+
+//   %hook LSStoryBucketViewController
+//     // - (void)_configureSeenHeads {
+//     //   return;
+//     // }
+//   %end
+
+//   %hook MBUIStoryViewerStoryIdentifierModel
+//     - (BOOL)isRead {
+//       return false;
+//     }
+//   %end
+
+//   %hook LSThreadMediaViewerBucketViewController
+//     - (id) threadMediaViewerBucketLoggingInfo {
+//       return nil;
+//     }
+
+//     - (BOOL) isPlaying {
+//       return false;
+//     }
+//   %end
+// %end
 
 %ctor {
   HBPreferences *pfs = [[HBPreferences alloc] initWithIdentifier:@"com.haoict.messengernoadspref"];
   [pfs registerBool:&noads default:YES forKey:@"noads"];
   [pfs registerBool:&removestoriesrow default:YES forKey:@"removestoriesrow"];
   [pfs registerBool:&disablereadreceipt default:YES forKey:@"disablereadreceipt"];
+  [pfs registerBool:&disabletypingindicator default:YES forKey:@"disabletypingindicator"];
+  [pfs registerBool:&disablepeopletab default:YES forKey:@"disablepeopletab"];
 
-  %init(LSCore);
+  %init(NoAdsNoStoriesRow);
+
+  if (disablereadreceipt) {
+    %init(DisableReadReceipt);
+  }
+
+  if (disabletypingindicator) {
+    %init(DisableTypingIndicator);
+  }
+
+  if (disablepeopletab) {
+    %init(DisablePeopleTab);
+  }
+
+  // not working yet
+  // %init(Story);
 }
 

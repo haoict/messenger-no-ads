@@ -63,6 +63,36 @@
         <string>com.haoict.messengernoadspref/ReloadPrefs</string>
       </dict>
 
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.messengernoadspref</string>
+        <key>key</key>
+        <string>disabletypingindicator</string>
+        <key>label</key>
+        <string>Disable Typing Indicator</string>
+        <key>PostNotification</key>
+        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+      </dict>
+
+      <dict>
+        <key>cell</key>
+        <string>PSSwitchCell</string>
+        <key>default</key>
+        <true/>
+        <key>defaults</key>
+        <string>com.haoict.messengernoadspref</string>
+        <key>key</key>
+        <string>disablepeopletab</string>
+        <key>label</key>
+        <string>Disable People Tab</string>
+        <key>PostNotification</key>
+        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+      </dict>
+
       <!-- Support Me -->
       <dict>
         <key>cell</key>

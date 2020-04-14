@@ -1,7 +1,7 @@
 Package: com.haoict.messengernoads
 Name: Messenger No Ads
 Depends: mobilesubstrate, preferenceloader, ws.hbang.common (>= 1.14), firmware (>= 10)
-Version: 1.0.1
+Version: 1.1.0
 Architecture: iphoneos-arm
 Description: Hide Ads on Messenger app, Remove Story Row, Disable Read Receipt
 Maintainer: Hao Nguyen
