@@ -4,18 +4,21 @@
   <dict>
     <key>items</key>
     <array>
-
       <dict>
         <key>cell</key>
-        <string>PSButtonCell</string>
+        <string>PSGroupCell</string>
+        <key>footerCellClass</key>
+        <string>MNAHeader</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
         <key>label</key>
-        <string>@haoict</string>
-        <key>cellClass</key>
-        <string>HBTwitterCell</string>
-        <key>label</key>
-        <string>Hao Nguyen</string>
-        <key>user</key>
-        <string>haoict</string>
+        <string>Main Preferences</string>
       </dict>
 
       <dict>
@@ -101,42 +104,62 @@
         <string>Support Me</string>
       </dict>
       <dict>
-        <key>cellClass</key>
-        <string>HBLinkTableCell</string>
+        <key>cell</key>
+        <string>PSLinkCell</string>
+        <key>label</key>
+        <string>Hao Nguyen 👨🏻‍💻</string>
+        <key>sublabel</key>
+        <string>@haoict</string>
+        <key>action</key>
+        <string>openURL:</string>
+        <key>url</key>
+        <string>https://twitter.com/haoict</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSLinkCell</string>
         <key>label</key>
         <string>Donation 💰</string>
-        <key>subtitle</key>
+        <key>sublabel</key>
         <string>Buy me a coffee</string>
+        <key>action</key>
+        <string>openURL:</string>
         <key>url</key>
         <string>https://paypal.me/haoict</string>
       </dict>
       <dict>
-        <key>cellClass</key>
-        <string>HBLinkTableCell</string>
+        <key>cell</key>
+        <string>PSLinkCell</string>
         <key>label</key>
         <string>Feature Request? ✨</string>
-        <key>subtitle</key>
+        <key>sublabel</key>
         <string>Send Me An Email With Your Request</string>
+        <key>action</key>
+        <string>openURL:</string>
         <key>url</key>
         <string>mailto:hao.ict56@gmail.com?subject=Messenger%20No%20Ads%20Feature%20Request</string>
       </dict>
       <dict>
-        <key>cellClass</key>
-        <string>HBLinkTableCell</string>
+        <key>cell</key>
+        <string>PSLinkCell</string>
         <key>label</key>
-        <string>Source Code 👾</string>
-        <key>subtitle</key>
+        <string>Source Code 🤖</string>
+        <key>sublabel</key>
         <string>Github</string>
+        <key>action</key>
+        <string>openURL:</string>
         <key>url</key>
         <string>https://github.com/haoict/messenger-no-ads</string>
       </dict>
       <dict>
-        <key>cellClass</key>
-        <string>HBLinkTableCell</string>
+        <key>cell</key>
+        <string>PSLinkCell</string>
         <key>label</key>
         <string>Found A Bug? 🐛</string>
-        <key>subtitle</key>
+        <key>sublabel</key>
         <string>Leave A Bug Report on Github</string>
+        <key>action</key>
+        <string>openURL:</string>
         <key>url</key>
         <string>https://github.com/haoict/messenger-no-ads/issues/new</string>
       </dict>

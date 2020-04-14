@@ -1,12 +1,31 @@
 #import <Foundation/Foundation.h>
-#import <Cephei/HBPreferences.h>
 #include "Tweak.h"
 
+/**
+ * Preferences Bundle
+ */
 BOOL noads = YES;
 BOOL removestoriesrow = YES;
 BOOL disablereadreceipt = YES;
 BOOL disabletypingindicator = YES;
 BOOL disablepeopletab = YES;
+
+static void reloadPrefs() {
+  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"];
+
+  noads = [[settings objectForKey:@"noads"] boolValue];
+  removestoriesrow = [[settings objectForKey:@"removestoriesrow"] boolValue];
+  disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] boolValue];
+  disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"] boolValue];
+  disablepeopletab = [[settings objectForKey:@"disablepeopletab"] boolValue];
+}
+static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+  reloadPrefs();
+}
+
+/**
+ * Tweak's hooking code
+ */
 
 %group NoAdsNoStoriesRow
   %hook MSGThreadListDataSource
@@ -132,13 +151,12 @@ BOOL disablepeopletab = YES;
 //   %end
 // %end
 
+/**
+ * Constructor
+ */
 %ctor {
-  HBPreferences *pfs = [[HBPreferences alloc] initWithIdentifier:@"com.haoict.messengernoadspref"];
-  [pfs registerBool:&noads default:YES forKey:@"noads"];
-  [pfs registerBool:&removestoriesrow default:YES forKey:@"removestoriesrow"];
-  [pfs registerBool:&disablereadreceipt default:YES forKey:@"disablereadreceipt"];
-  [pfs registerBool:&disabletypingindicator default:YES forKey:@"disabletypingindicator"];
-  [pfs registerBool:&disablepeopletab default:YES forKey:@"disablepeopletab"];
+  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) PreferencesChangedCallback, CFSTR("com.haoict.messengernoadspref/ReloadPrefs"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+  reloadPrefs();
 
   %init(NoAdsNoStoriesRow);
 

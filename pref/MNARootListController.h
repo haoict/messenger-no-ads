@@ -1,24 +1,32 @@
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
-#import <CepheiPrefs/HBRootListController.h>
-#import <CepheiPrefs/HBAppearanceSettings.h>
-#import <Cephei/HBPreferences.h>
-#import "NSTask.h"
 
-@interface MNAAppearanceSettings : HBAppearanceSettings
+@interface NSTask : NSObject
+@property (copy) NSArray *arguments;
+@property (copy) NSString *currentDirectoryPath;
+@property (copy) NSDictionary *environment;
+@property (copy) NSString *launchPath;
+@property (readonly) int processIdentifier;
+@property (retain) id standardError;
+@property (retain) id standardInput;
+@property (retain) id standardOutput;
++ (id)currentTaskDictionary;
++ (id)launchedTaskWithDictionary:(id)arg1;
++ (id)launchedTaskWithLaunchPath:(id)arg1 arguments:(id)arg2;
+- (id)init;
+- (void)interrupt;
+- (bool)isRunning;
+- (void)launch;
+- (bool)resume;
+- (bool)suspend;
+- (void)terminate;
 @end
 
-@interface MNARootListController : HBRootListController {
-  UITableView * _table;
+@interface MNAHeader : UITableViewCell {
+  UILabel *label;
+  UILabel *underLabel;
 }
+@end
 
-@property (nonatomic, retain) UIBarButtonItem *respringButton;
-@property (nonatomic, retain) UIView *headerView;
-@property (nonatomic, retain) UIImageView *headerImageView;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UIImageView *iconView;
-
--(void)killMessenger;
--(void)respring;
-
+@interface MNARootListController : PSListController
 @end

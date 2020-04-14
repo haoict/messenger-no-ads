@@ -1,132 +1,86 @@
 #include "MNARootListController.h"
 
-@implementation MNARootListController
+#define kTintColor [UIColor colorWithRed:0.72 green:0.53 blue:1.00 alpha:1.00];
 
-- (instancetype)init {
-  self = [super init];
-
+/**
+ * Header, logo
+ */
+@implementation MNAHeader
+- (id)initWithSpecifier:(PSSpecifier *)specifier {
+  self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
   if (self) {
-    MNAAppearanceSettings *appearanceSettings = [[MNAAppearanceSettings alloc] init];
-    self.hb_appearanceSettings = appearanceSettings;
-    self.respringButton = [[UIBarButtonItem alloc] initWithTitle:@"Apply" 
-                            style:UIBarButtonItemStylePlain
-                            target:self 
-                            action:@selector(killMessenger)];
-    self.respringButton.tintColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = self.respringButton;
+    #define kWidth [[UIApplication sharedApplication] keyWindow].frame.size.width
+    NSArray *subtitles = [NSArray arrayWithObjects:@"By @haoict", @"Free and Open Source!", nil];
 
-    self.navigationItem.titleView = [UIView new];
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleLabel.text = @"Messenger No Ads";
-    self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.navigationItem.titleView addSubview:self.titleLabel];
+    CGRect labelFrame = CGRectMake(0, -15, kWidth, 80);
+    CGRect underLabelFrame = CGRectMake(0, 35, kWidth, 60);
 
-    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.iconView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iconView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/MNAPref.bundle/icon@2x.png"];
-    self.iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.iconView.alpha = 0.0;
-    [self.navigationItem.titleView addSubview:self.iconView];
-    
-    [NSLayoutConstraint activateConstraints:@[
-      [self.titleLabel.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-      [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-      [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-      [self.titleLabel.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
-      [self.iconView.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-      [self.iconView.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-      [self.iconView.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-      [self.iconView.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
-    ]];
+    label = [[UILabel alloc] initWithFrame:labelFrame];
+    [label setNumberOfLines:1];
+    label.font = [UIFont systemFontOfSize:35];
+    [label setText:@"Messenger No Ads"];
+    label.textColor = kTintColor;
+    label.textAlignment = NSTextAlignmentCenter;
+
+    underLabel = [[UILabel alloc] initWithFrame:underLabelFrame];
+    [underLabel setNumberOfLines:1];
+    underLabel.font = [UIFont systemFontOfSize:15];
+    uint32_t rnd = arc4random_uniform([subtitles count]);
+    [underLabel setText:[subtitles objectAtIndex:rnd]];
+    underLabel.textColor = [UIColor grayColor];
+    underLabel.textAlignment = NSTextAlignmentCenter;
+
+    [self addSubview:label];
+    [self addSubview:underLabel];
   }
-
   return self;
 }
+- (CGFloat)preferredHeightForWidth:(CGFloat)arg1 {
+  CGFloat prefHeight = 75.0;
+  return prefHeight;
+}
+@end
 
--(NSArray *)specifiers {
-  if (_specifiers == nil) {
-    _specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
+/**
+ * Root: No change if not needed
+ */
+@implementation MNARootListController
+- (id)init {
+  self = [super init];
+  if (self) {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(apply)];;
   }
-
-  return _specifiers;
+  return self;
 }
-
-- (void)viewDidLoad {
-  [super viewDidLoad];
-
-  self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0,0,200,200)];
-  self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,200,200)];
-  self.headerImageView.contentMode = UIViewContentModeScaleAspectFill;
-  self.headerImageView.image = [UIImage imageWithContentsOfFile:@"/Library/PreferenceBundles/MNAPref.bundle/Banner.jpg"];
-  self.headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-  [self.headerView addSubview:self.headerImageView];
-  [NSLayoutConstraint activateConstraints:@[
-    [self.headerImageView.topAnchor constraintEqualToAnchor:self.headerView.topAnchor],
-    [self.headerImageView.leadingAnchor constraintEqualToAnchor:self.headerView.leadingAnchor],
-    [self.headerImageView.trailingAnchor constraintEqualToAnchor:self.headerView.trailingAnchor],
-    [self.headerImageView.bottomAnchor constraintEqualToAnchor:self.headerView.bottomAnchor],
-  ]];
-
-  _table.tableHeaderView = self.headerView;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  tableView.tableHeaderView = self.headerView;
-  return [super tableView:tableView cellForRowAtIndexPath:indexPath];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-
-  CGRect frame = self.table.bounds;
-  frame.origin.y = -frame.size.height;
-
-  self.navigationController.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.75 green:0.80 blue:0.98 alpha:1.0];
-  [self.navigationController.navigationController.navigationBar setShadowImage: [UIImage new]];
-  self.navigationController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-  self.navigationController.navigationController.navigationBar.translucent = NO;
+  UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+  self.view.tintColor = kTintColor;
+  keyWindow.tintColor = kTintColor;
+  [UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]].onTintColor = kTintColor;
 }
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-
-  [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
-
-  [self.navigationController.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+  UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+  keyWindow.tintColor = nil;
 }
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-  CGFloat offsetY = scrollView.contentOffset.y;
-
-  if (offsetY > 200) {
-    [UIView animateWithDuration:0.2 animations:^{
-      self.iconView.alpha = 1.0;
-      self.titleLabel.alpha = 0.0;
-    }];
-  } else {
-    [UIView animateWithDuration:0.2 animations:^{
-      self.iconView.alpha = 0.0;
-      self.titleLabel.alpha = 1.0;
-    }];
+- (NSArray *)specifiers {
+  if (!_specifiers) {
+    _specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
   }
-  
-  if (offsetY > 0) offsetY = 0;
-  self.headerImageView.frame = CGRectMake(0, offsetY, self.headerView.frame.size.width, 200 - offsetY);
+  return _specifiers;
+}
+- (void)openURL:(PSSpecifier *)specifier  {
+  UIApplication *app = [UIApplication sharedApplication];
+  NSString *url = [specifier.properties objectForKey:@"url"];
+  [app openURL:[NSURL URLWithString:url] options:@{} completionHandler:nil];
 }
 
--(void)killMessenger {
-  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@"Messenger No Ads"
-                                  message:@"Do you really want to kill Messenger?"
-                                  preferredStyle:UIAlertControllerStyleAlert];
+/**
+ * Apply top right button
+ */
+-(void)apply {
+  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@"Messenger No Ads" message:@"Do you really want to kill Messenger?" preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
     NSTask *killall = [[NSTask alloc] init];
     [killall setLaunchPath:@"/usr/bin/killall"];
@@ -140,21 +94,11 @@
   [self presentViewController:killConfirm animated:YES completion:nil];
 }
 
--(void)respring {
-  UIAlertController *respring = [UIAlertController alertControllerWithTitle:@"Messenger No Ads"
-                                  message:@"Do you really want to ReSpring?"
-                                  preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-    NSTask *t = [[NSTask alloc] init];
-    [t setLaunchPath:@"/usr/bin/killall"];
-    [t setArguments:[NSArray arrayWithObjects:@"backboardd", nil]];
-    [t launch];
-  }];
-
-  UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-  [respring addAction:confirmAction];
-  [respring addAction:cancelAction];
-  [self presentViewController:respring animated:YES completion:nil];
+- (void)respring {
+  NSTask *killall = [[NSTask alloc] init];
+  [killall setLaunchPath:@"/usr/bin/killall"];
+  [killall setArguments:[NSArray arrayWithObjects:@"backboardd", nil]];
+  [killall launch];
 }
 
 @end
