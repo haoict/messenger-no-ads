@@ -4,20 +4,22 @@
 /**
  * Preferences Bundle
  */
-BOOL noads = YES;
-BOOL removestoriesrow = YES;
-BOOL disablereadreceipt = YES;
-BOOL disabletypingindicator = YES;
-BOOL disablepeopletab = YES;
+BOOL noads;
+BOOL disablereadreceipt;
+BOOL disabletypingindicator;
+BOOL hidesearchbar;
+BOOL hidestoriesrow;
+BOOL hidepeopletab;
 
 static void reloadPrefs() {
   NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"];
 
-  noads = [[settings objectForKey:@"noads"] boolValue];
-  removestoriesrow = [[settings objectForKey:@"removestoriesrow"] boolValue];
-  disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] boolValue];
-  disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"] boolValue];
-  disablepeopletab = [[settings objectForKey:@"disablepeopletab"] boolValue];
+  noads = [[settings objectForKey:@"noads"]?:@(YES) boolValue];
+  disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"]?:@(YES) boolValue];
+  disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"]?:@(YES) boolValue];
+  hidesearchbar = [[settings objectForKey:@"hidesearchbar"]?:@(NO) boolValue];
+  hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"]?:@(NO) boolValue];
+  hidepeopletab = [[settings objectForKey:@"hidepeopletab"]?:@(NO) boolValue];
 }
 static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
   reloadPrefs();
@@ -33,7 +35,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       NSArray *orig = %orig;
       NSMutableArray *resultRows = [@[] mutableCopy];
 
-      if (!removestoriesrow) {
+      if (!hidestoriesrow) {
         [resultRows addObject:orig[0]];
       }
 
@@ -92,12 +94,20 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %end
 %end
 
-%group DisablePeopleTab
+%group HidePeopleTab
   %hook UITabBarController
     - (UITabBar *)tabBar {
       UITabBar *orig = %orig;
       orig.hidden = true;
       return orig;
+    }
+  %end
+%end
+
+%group HideSearchBar
+  %hook UINavigationController
+    - (void)_createAndAttachSearchPaletteForTransitionToTopViewControllerIfNecesssary:(id)arg1 {
+      NSLog(@"_createAndAttachSearchPaletteForTransitionToTopViewControllerIfNecesssary");
     }
   %end
 %end
@@ -168,8 +178,12 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     %init(DisableTypingIndicator);
   }
 
-  if (disablepeopletab) {
-    %init(DisablePeopleTab);
+  if (hidesearchbar) {
+    %init(HideSearchBar);
+  }
+
+  if (hidepeopletab) {
+    %init(HidePeopleTab);
   }
 
   // not working yet
