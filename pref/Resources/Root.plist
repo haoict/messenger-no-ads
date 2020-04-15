@@ -76,7 +76,7 @@
         <key>key</key>
         <string>hidesearchbar</string>
         <key>label</key>
-        <string>Hide Search Bar</string>
+        <string>Hide Search Bar (iOS 12 only)</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/ReloadPrefs</string>
       </dict>

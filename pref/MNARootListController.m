@@ -68,6 +68,17 @@
   if (!_specifiers) {
     _specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
   }
+
+  /** Disable Hide Search Bar for ios 13 - begin **/
+  if (@available(iOS 13, *)) {
+    for (PSSpecifier *spec in _specifiers) {
+      if ([[spec.properties objectForKey:@"key"] isEqual:@"hidesearchbar"]) {
+        [spec setProperty:@FALSE forKey:@"enabled"];
+      }
+    }
+  }
+  /** Disable Hide Search Bar for ios 13 - end   **/
+
   return _specifiers;
 }
 - (void)openURL:(PSSpecifier *)specifier  {
