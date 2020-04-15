@@ -61,10 +61,14 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
 %group DisableTypingIndicator
   %hook LSTextView
+    unsigned long previousLength = 0;
     - (void)updateTextViewForTextChangedAnimated:(BOOL)arg1 {
       [self updateSizeAnimated:arg1];
       self.collapsed = false;
-      if (![self hasText] || [self.text length] == 1) {
+      // only update composer bar state when text is empty or has only one character
+      // howerver, in case user first input is emoji, text.length is not 1
+      // and emoji length is not constantly 2, some emoji's length are even 11 (family emoji)
+      if (![self hasText] || previousLength == 0) {
         [[%c(LSComposerViewController) sharedInstance] updateComposerBarState];
       }
 
@@ -75,6 +79,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       } else {
         placeholderLabel.text  = @"Aa";
       }
+      previousLength = [self.text length];
     }
   %end
 
