@@ -33,9 +33,14 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %hook MSGThreadListDataSource
     - (NSArray *)inboxRows {
       NSArray *orig = %orig;
+      if (![orig count]) {
+        return orig;
+      }
+
       NSMutableArray *resultRows = [@[] mutableCopy];
 
-      if (!hidestoriesrow) {
+      // TODO: Show spam row in Message Request View
+      if (!(hidestoriesrow && [orig[0][1] intValue] == 2)) {
         [resultRows addObject:orig[0]];
       }
 
@@ -112,7 +117,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %group HideSearchBar
   %hook UINavigationController
     - (void)_createAndAttachSearchPaletteForTransitionToTopViewControllerIfNecesssary:(id)arg1 {
-      NSLog(@"_createAndAttachSearchPaletteForTransitionToTopViewControllerIfNecesssary");
     }
   %end
 %end
