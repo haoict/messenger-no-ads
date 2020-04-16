@@ -1,5 +1,7 @@
 #include "MNARootListController.h"
 
+#define TWEAK_TITLE "Messenger No Ads"
+#define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
 #define kTintColor [UIColor colorWithRed:0.72 green:0.53 blue:1.00 alpha:1.00];
 
 /**
@@ -18,7 +20,7 @@
     label = [[UILabel alloc] initWithFrame:labelFrame];
     [label setNumberOfLines:1];
     label.font = [UIFont systemFontOfSize:35];
-    [label setText:@"Messenger No Ads"];
+    [label setText:@TWEAK_TITLE];
     label.textColor = kTintColor;
     label.textAlignment = NSTextAlignmentCenter;
 
@@ -45,11 +47,17 @@
  * Root: No change if not needed
  */
 @implementation MNARootListController
+MNARootListController *sharedInstance;
++ (id)sharedInstance {
+  return sharedInstance;
+}
+
 - (id)init {
   self = [super init];
   if (self) {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(apply)];;
   }
+  sharedInstance = self;
   return self;
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,6 +89,39 @@
 
   return _specifiers;
 }
+- (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
+  NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH]?:[@{} mutableCopy];
+  [settings setObject:value forKey:[[specifier properties] objectForKey:@"key"]];
+  [settings writeToFile:@PLIST_PATH atomically:YES];
+  notify_post("com.haoict.messengernoadspref/ReloadPrefs");
+  if ([[specifier properties] objectForKey:@"PromptRespring"]) {
+    // show get top window
+    __block UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    topWindow.rootViewController = [UIViewController new];
+    topWindow.windowLevel = UIWindowLevelAlert + 1;
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@TWEAK_TITLE message:@"An Respring is requerid for this option." preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+      topWindow.hidden = YES;
+      topWindow = nil;
+      [self respring];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+      topWindow.hidden = YES;
+      topWindow = nil;
+    }]];
+    [topWindow makeKeyAndVisible];
+    [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+  }
+}
+- (id)readPreferenceValue:(PSSpecifier *)specifier {
+  NSDictionary *settings = [[NSDictionary alloc] initWithContentsOfFile:@PLIST_PATH];
+  return settings[[[specifier properties] objectForKey:@"key"]]?:[[specifier properties] objectForKey:@"default"];
+}
+- (void)resetSettings:(PSSpecifier *)specifier  {
+  [@{} writeToFile:@PLIST_PATH atomically:YES];
+  [self reloadSpecifiers];
+  notify_post("com.haoict.messengernoadspref/ReloadPrefs");
+}
 - (void)openURL:(PSSpecifier *)specifier  {
   UIApplication *app = [UIApplication sharedApplication];
   NSString *url = [specifier.properties objectForKey:@"url"];
@@ -91,7 +132,7 @@
  * Apply top right button
  */
 -(void)apply {
-  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@"Messenger No Ads" message:@"Do you really want to kill Messenger?" preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@TWEAK_TITLE message:@"Do you really want to kill Messenger?" preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
     NSTask *killall = [[NSTask alloc] init];
     [killall setLaunchPath:@"/usr/bin/killall"];

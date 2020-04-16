@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #include "Tweak.h"
 
+#define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
+
 /**
  * Preferences Bundle
  */
@@ -13,7 +15,7 @@ BOOL hidestoriesrow;
 BOOL hidepeopletab;
 
 static void reloadPrefs() {
-  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"];
+  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH];
 
   noads = [[settings objectForKey:@"noads"]?:@(YES) boolValue];
   disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"]?:@(YES) boolValue];
@@ -60,7 +62,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %group DisableReadReceipt
   %hook LSMessageListViewController
     - (void)_sendReadReceiptIfNeeded {
-      return;
+      if (disablereadreceipt) {
+        return;
+      }
+      %orig;
     }
   %end
 %end
@@ -156,10 +161,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   reloadPrefs();
 
   %init(NoAdsNoStoriesRow);
-
-  if (disablereadreceipt) {
-    %init(DisableReadReceipt);
-  }
+  %init(DisableReadReceipt);
 
   if (disabletypingindicator) {
     %init(DisableTypingIndicator);

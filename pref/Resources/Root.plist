@@ -126,6 +126,22 @@
         <string>com.haoict.messengernoadspref/ReloadPrefs</string>
       </dict>
 
+      <!-- Reset Settings -->
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Other Preferences</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSLinkCell</string>
+        <key>label</key>
+        <string>Reset Settings</string>
+        <key>action</key>
+        <string>resetSettings:</string>
+      </dict>
+
       <!-- Support Me -->
       <dict>
         <key>cell</key>

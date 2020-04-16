@@ -1,3 +1,4 @@
+#import <notify.h>
 #import <Preferences/PSListController.h>
 #import <Preferences/PSSpecifier.h>
 
@@ -29,4 +30,5 @@
 @end
 
 @interface MNARootListController : PSListController
++ (id)sharedInstance;
 @end
