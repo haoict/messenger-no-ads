@@ -41,8 +41,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
       NSMutableArray *resultRows = [@[] mutableCopy];
 
-      // TODO: Show spam row in Message Request View
-      if (!(hidestoriesrow && [orig[0][1] intValue] == 2)) {
+      if (!(hidestoriesrow && [orig[0][2] isKindOfClass:[NSArray class]] && [orig[0][2][1] isEqual:@"montage_renderer"])) {
         [resultRows addObject:orig[0]];
       }
 
