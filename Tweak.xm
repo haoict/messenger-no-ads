@@ -7,6 +7,7 @@
 BOOL noads;
 BOOL disablereadreceipt;
 BOOL disabletypingindicator;
+BOOL disablestoryseenreceipt;
 BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
@@ -17,6 +18,7 @@ static void reloadPrefs() {
   noads = [[settings objectForKey:@"noads"]?:@(YES) boolValue];
   disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"]?:@(YES) boolValue];
   disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"]?:@(YES) boolValue];
+  disablestoryseenreceipt = [[settings objectForKey:@"disablestoryseenreceipt"]?:@(YES) boolValue];
   hidesearchbar = [[settings objectForKey:@"hidesearchbar"]?:@(NO) boolValue];
   hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"]?:@(NO) boolValue];
   hidepeopletab = [[settings objectForKey:@"hidepeopletab"]?:@(NO) boolValue];
@@ -104,6 +106,27 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %end
 %end
 
+%group DisableStorySeenReceipt
+  %hook LSStoryBucketViewControllerBase
+    - (void)viewDidAppear:(_Bool)arg1 {
+      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
+      [_videoPlayerView startPlayMedia];
+    }
+
+    - (void)moveToNextStoryThread {
+      %orig;
+      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
+      [_videoPlayerView startPlayMedia];
+    }
+
+    - (void)moveToPreviousStoryThread {
+      %orig;
+      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
+      [_videoPlayerView startPlayMedia];
+    }
+  %end
+%end
+
 %group HidePeopleTab
   %hook UITabBarController
     - (UITabBar *)tabBar {
@@ -122,58 +145,14 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %end
 
 
-// %group Story
-//   %hook MBUIStoryViewerBucketModel 
-//     - (BOOL) hasUnread {
-//       return true;
-//     }
-//   %end
 
-//   %hook LSMediaViewController
-//     - (BOOL)canSaveMedia {
-//       return true;
-//     }
-//   %end
-
-//   %hook LSMediaPhotoViewController
-//     - (BOOL)canSaveMedia {
-//       return true;
-//     }
-//   %end
-
-//   %hook LSMediaVideoViewController
-//     - (BOOL)canSaveMedia {
-//       return true;
-//     }
-//   %end
-
-//   %hook LSStoryBucketViewController
-//     // - (void)_configureSeenHeads {
-//     //   return;
-//     // }
-//   %end
-
-//   %hook MBUIStoryViewerStoryIdentifierModel
-//     - (BOOL)isRead {
-//       return false;
-//     }
-//   %end
-
-//   %hook LSThreadMediaViewerBucketViewController
-//     - (id) threadMediaViewerBucketLoggingInfo {
-//       return nil;
-//     }
-
-//     - (BOOL) isPlaying {
-//       return false;
-//     }
-//   %end
-// %end
 
 /**
  * Constructor
  */
 %ctor {
+  dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
+
   CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) PreferencesChangedCallback, CFSTR("com.haoict.messengernoadspref/ReloadPrefs"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
 
@@ -187,6 +166,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     %init(DisableTypingIndicator);
   }
 
+  if (disablestoryseenreceipt) {
+    %init(DisableStorySeenReceipt);
+  }
+
   if (hidesearchbar) {
     %init(HideSearchBar);
   }
@@ -194,8 +177,5 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   if (hidepeopletab) {
     %init(HidePeopleTab);
   }
-
-  // not working yet
-  // %init(Story);
 }
 
