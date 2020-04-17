@@ -2,6 +2,7 @@
 
 #define TWEAK_TITLE "Messenger No Ads"
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
+#define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
 #define kTintColor [UIColor colorWithRed:0.72 green:0.53 blue:1.00 alpha:1.00];
 
 /**
@@ -90,37 +91,19 @@ MNARootListController *sharedInstance;
   return _specifiers;
 }
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
-  NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH]?:[@{} mutableCopy];
+  NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH] ?: [@{} mutableCopy];
   [settings setObject:value forKey:[[specifier properties] objectForKey:@"key"]];
   [settings writeToFile:@PLIST_PATH atomically:YES];
-  notify_post("com.haoict.messengernoadspref/ReloadPrefs");
-  if ([[specifier properties] objectForKey:@"PromptRespring"]) {
-    // show get top window
-    __block UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    topWindow.rootViewController = [UIViewController new];
-    topWindow.windowLevel = UIWindowLevelAlert + 1;
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@TWEAK_TITLE message:@"An Respring is requerid for this option." preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-      topWindow.hidden = YES;
-      topWindow = nil;
-      [self respring];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-      topWindow.hidden = YES;
-      topWindow = nil;
-    }]];
-    [topWindow makeKeyAndVisible];
-    [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-  }
+  notify_post(PREF_CHANGED_NOTIF);
 }
 - (id)readPreferenceValue:(PSSpecifier *)specifier {
   NSDictionary *settings = [[NSDictionary alloc] initWithContentsOfFile:@PLIST_PATH];
-  return settings[[[specifier properties] objectForKey:@"key"]]?:[[specifier properties] objectForKey:@"default"];
+  return settings[[[specifier properties] objectForKey:@"key"]] ?: [[specifier properties] objectForKey:@"default"];
 }
 - (void)resetSettings:(PSSpecifier *)specifier  {
   [@{} writeToFile:@PLIST_PATH atomically:YES];
   [self reloadSpecifiers];
-  notify_post("com.haoict.messengernoadspref/ReloadPrefs");
+  notify_post(PREF_CHANGED_NOTIF);
 }
 - (void)openURL:(PSSpecifier *)specifier  {
   UIApplication *app = [UIApplication sharedApplication];

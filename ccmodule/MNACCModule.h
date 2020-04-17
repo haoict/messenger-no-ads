@@ -1,7 +1,7 @@
 #import <notify.h>
 #import <ControlCenterUIKit/CCUIToggleModule.h>
 
-@interface messengernoadscc : CCUIToggleModule {
+@interface MNACCModule : CCUIToggleModule {
   BOOL _selected;
 }
 

@@ -2,6 +2,7 @@
 #include "Tweak.h"
 
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
+#define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
 
 /**
  * Preferences Bundle
@@ -17,13 +18,13 @@ BOOL hidepeopletab;
 static void reloadPrefs() {
   NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH];
 
-  noads = [[settings objectForKey:@"noads"]?:@(YES) boolValue];
-  disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"]?:@(YES) boolValue];
-  disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"]?:@(YES) boolValue];
-  disablestoryseenreceipt = [[settings objectForKey:@"disablestoryseenreceipt"]?:@(YES) boolValue];
-  hidesearchbar = [[settings objectForKey:@"hidesearchbar"]?:@(NO) boolValue];
-  hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"]?:@(NO) boolValue];
-  hidepeopletab = [[settings objectForKey:@"hidepeopletab"]?:@(NO) boolValue];
+  noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
+  disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] ?: @(YES) boolValue];
+  disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"] ?: @(YES) boolValue];
+  disablestoryseenreceipt = [[settings objectForKey:@"disablestoryseenreceipt"] ?: @(YES) boolValue];
+  hidesearchbar = [[settings objectForKey:@"hidesearchbar"] ?: @(NO) boolValue];
+  hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"] ?: @(NO) boolValue];
+  hidepeopletab = [[settings objectForKey:@"hidepeopletab"] ?: @(NO) boolValue];
 }
 static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
   reloadPrefs();
@@ -155,10 +156,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
  * Constructor
  */
 %ctor {
-  dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
-
-  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) PreferencesChangedCallback, CFSTR("com.haoict.messengernoadspref/ReloadPrefs"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) PreferencesChangedCallback, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
+
+  dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
 
   %init(NoAdsNoStoriesRow);
   %init(DisableReadReceipt);

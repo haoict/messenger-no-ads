@@ -5,9 +5,9 @@ INSTALL_TARGET_PROCESSES = LightSpeedApp Messenger
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = messengernoads
-messengernoads_FILES = Tweak.xm
-messengernoads_CFLAGS = -fobjc-arc
+TWEAK_NAME = MessengerNoAds
+MessengerNoAds_FILES = Tweak.xm
+MessengerNoAds_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

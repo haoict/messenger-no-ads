@@ -33,7 +33,7 @@
         <key>label</key>
         <string>No Ads</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -48,7 +48,7 @@
         <key>label</key>
         <string>Disable Read Receipt</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -63,7 +63,7 @@
         <key>label</key>
         <string>Disable Typing Indicator</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -78,7 +78,7 @@
         <key>label</key>
         <string>Disable Story Seen Receipt</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -93,7 +93,7 @@
         <key>label</key>
         <string>Hide Search Bar (iOS 12 only)</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -108,7 +108,7 @@
         <key>label</key>
         <string>Hide Stories Row</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <dict>
@@ -123,7 +123,7 @@
         <key>label</key>
         <string>Hide People Tab</string>
         <key>PostNotification</key>
-        <string>com.haoict.messengernoadspref/ReloadPrefs</string>
+        <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
 
       <!-- Reset Settings -->
