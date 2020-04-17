@@ -1,11 +1,7 @@
-#import <Foundation/Foundation.h>
 #include "Tweak.h"
 
-#define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
-#define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
-
 /**
- * Preferences Bundle
+ * Load Preferences
  */
 BOOL noads;
 BOOL disablereadreceipt;
@@ -30,10 +26,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   reloadPrefs();
 }
 
+
 /**
  * Tweak's hooking code
  */
-
 %group NoAdsNoStoriesRow
   %hook MSGThreadListDataSource
     - (NSArray *)inboxRows {
@@ -63,71 +59,29 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %group DisableReadReceipt
   %hook LSMessageListViewController
     - (void)_sendReadReceiptIfNeeded {
-      if (disablereadreceipt) {
-        return;
+      if (!disablereadreceipt) {
+        %orig;
       }
-      %orig;
     }
   %end
 %end
 
 %group DisableTypingIndicator
-  %hook LSTextView
-    unsigned long previousLength = 0;
-    - (void)updateTextViewForTextChangedAnimated:(BOOL)arg1 {
-      [self updateSizeAnimated:arg1];
-      self.collapsed = false;
-      // only update composer bar state when text is empty or has only one character
-      // howerver, in case user first input is emoji, text.length is not 1
-      // and emoji length is not constantly 2, some emoji's length are even 11 (family emoji)
-      if (![self hasText] || previousLength == 0) {
-        [[%c(LSComposerViewController) sharedInstance] updateComposerBarState];
-      }
-
-      UILabel *placeholderLabel = MSHookIvar<UILabel *>(self, "_placeholderLabel");
-      if ([self hasText]) {
-        [[%c(LSComposerViewController) sharedInstance] setTextChangedSinceTextViewCollapsed:true];
-        placeholderLabel.text  = @"";
-      } else {
-        placeholderLabel.text  = @"Aa";
-      }
-      previousLength = [self.text length];
-    }
-  %end
-
   %hook LSComposerViewController
-    static LSComposerViewController *__weak sharedInstance;
-
-    - (id)initWithMailbox:(id)arg1 mediaManager:(id)arg2 generatedImageManager:(id)arg3 audioSessionManager:(id)arg4 backgroundTaskManager:(id)arg5 composerTheme:(id)arg6 composerConfiguration:(id)arg7 threadViewContextUniqueIdentifier:(id)arg8 textInputContextIdentifier:(id)arg9 composerState:(id)arg10 composerExtendedSendBlock:(id)arg11 {
-      id original = %orig;
-      sharedInstance = original;
-      return original;
-    }
-
-    %new
-    + (id)sharedInstance {
-      return sharedInstance;
+    - (void)_updateComposerEventWithTextViewChanged:(id)arg1 {
+      if (!disabletypingindicator) {
+        %orig;
+      }
     }
   %end
 %end
 
 %group DisableStorySeenReceipt
-  %hook LSStoryBucketViewControllerBase
-    - (void)viewDidAppear:(_Bool)arg1 {
-      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
-      [_videoPlayerView startPlayMedia];
-    }
-
-    - (void)moveToNextStoryThread {
-      %orig;
-      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
-      [_videoPlayerView startPlayMedia];
-    }
-
-    - (void)moveToPreviousStoryThread {
-      %orig;
-      LSVideoPlayerView *_videoPlayerView = MSHookIvar<LSVideoPlayerView *>(self, "_videoPlayerView");
-      [_videoPlayerView startPlayMedia];
+  %hook LSStoryBucketViewController
+    - (void)startTimer {
+      if (!disablestoryseenreceipt) {
+        %orig;
+      }
     }
   %end
 %end
@@ -150,8 +104,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %end
 
 
-
-
 /**
  * Constructor
  */
@@ -163,14 +115,8 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
   %init(NoAdsNoStoriesRow);
   %init(DisableReadReceipt);
-
-  if (disabletypingindicator) {
-    %init(DisableTypingIndicator);
-  }
-
-  if (disablestoryseenreceipt) {
-    %init(DisableStorySeenReceipt);
-  }
+  %init(DisableTypingIndicator);
+  %init(DisableStorySeenReceipt);
 
   if (hidesearchbar) {
     %init(HideSearchBar);

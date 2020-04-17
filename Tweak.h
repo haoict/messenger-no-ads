@@ -1,15 +1,4 @@
-// Disable Typing Indicator Interfaces
-@interface LSTextView : UITextView
-@property(nonatomic) _Bool collapsed;
-- (void)updateSizeAnimated:(_Bool)arg1;
-@end
+#import <Foundation/Foundation.h>
 
-@interface LSComposerViewController : UIViewController
-+ (id)sharedInstance;
-- (void)setTextChangedSinceTextViewCollapsed:(BOOL)arg1;
-- (void)updateComposerBarState;
-@end
-
-@interface LSVideoPlayerView
-- (void)startPlayMedia;
-@end
+#define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
+#define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
