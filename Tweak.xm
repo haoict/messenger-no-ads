@@ -7,6 +7,7 @@ BOOL noads;
 BOOL disablereadreceipt;
 BOOL disabletypingindicator;
 BOOL disablestoryseenreceipt;
+BOOL cansavefriendsstory;
 BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
@@ -18,6 +19,7 @@ static void reloadPrefs() {
   disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] ?: @(YES) boolValue];
   disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"] ?: @(YES) boolValue];
   disablestoryseenreceipt = [[settings objectForKey:@"disablestoryseenreceipt"] ?: @(YES) boolValue];
+  cansavefriendsstory = [[settings objectForKey:@"cansavefriendsstory"] ?: @(YES) boolValue];
   hidesearchbar = [[settings objectForKey:@"hidesearchbar"] ?: @(NO) boolValue];
   hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"] ?: @(NO) boolValue];
   hidepeopletab = [[settings objectForKey:@"hidepeopletab"] ?: @(NO) boolValue];
@@ -86,6 +88,31 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %end
 %end
 
+%group CanSaveFriendsStory
+  %hook LSAppDelegate
+    static LSAppDelegate *__weak sharedInstance;
+    - (void)applicationDidBecomeActive:(id)arg1 {
+      %orig;
+      sharedInstance = self;
+    }
+
+    %new
+    + (id)sharedInstance {
+      return sharedInstance;
+    }
+  %end
+
+  %hook MBUIStoryViewerAuthorOverlayModel
+    - (NSString *)authorId {
+      if (cansavefriendsstory) {
+        NSString *userId = [[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId];
+        return userId;
+      }
+      return %orig;
+    }
+  %end
+%end
+
 %group HidePeopleTab
   %hook UITabBarController
     - (UITabBar *)tabBar {
@@ -117,6 +144,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %init(DisableReadReceipt);
   %init(DisableTypingIndicator);
   %init(DisableStorySeenReceipt);
+  %init(CanSaveFriendsStory);
 
   if (hidesearchbar) {
     %init(HideSearchBar);

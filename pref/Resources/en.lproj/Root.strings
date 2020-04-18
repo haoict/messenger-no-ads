@@ -8,6 +8,7 @@
   "DISABLE_READ_RECEIPT" = "Disable Read Receipt";
   "DISABLE_TYPING_INDICATOR" = "Disable Typing Indicator";
   "DISABLE_STORY_SEEN_RECEIPT" = "Disable Story Seen Receipt";
+  "CAN_SAVE_FRIENDS_STORY" = "Can Save Friend's Story";
   "HIDE_SEARCH_BAR" = "Hide Search Bar (iOS 12 only)";
   "HIDE_STORIES_ROW" = "Hide Stories Row";
   "HIDE_PEOPLE_TAB" = "Hide People Tab";

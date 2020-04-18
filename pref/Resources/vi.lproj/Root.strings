@@ -8,6 +8,7 @@
   "DISABLE_READ_RECEIPT" = "Tắt đã xem tin nhắn";
   "DISABLE_TYPING_INDICATOR" = "Tắt đang gõ";
   "DISABLE_STORY_SEEN_RECEIPT" = "Tắt đã xem story";
+  "CAN_SAVE_FRIENDS_STORY" = "Bật lưu story của bạn bè";
   "HIDE_SEARCH_BAR" = "Ẩn ô tìm kiếm (iOS 12)";
   "HIDE_STORIES_ROW" = "Ẩn hàng story";
   "HIDE_PEOPLE_TAB" = "Ẩn tab Mọi người";

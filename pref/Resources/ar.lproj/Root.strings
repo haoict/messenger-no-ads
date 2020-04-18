@@ -8,6 +8,7 @@
   "DISABLE_READ_RECEIPT" = "تعطيل إيصال القراءة";
   "DISABLE_TYPING_INDICATOR" = "الغاء مشاهده يقوم بالكتابه الان";
   "DISABLE_STORY_SEEN_RECEIPT" = "الغاء تمت المشاهده من الطرف الاخر";
+  "CAN_SAVE_FRIENDS_STORY" = "يمكن حفظ قصة صديق";
   "HIDE_SEARCH_BAR" = "اخفاء شريط البحث - تعمل فقط مع الاصدار 12";
   "HIDE_STORIES_ROW" = "إخفاء صف القصص";
   "HIDE_PEOPLE_TAB" = "إخفاء تبويب الناس";
