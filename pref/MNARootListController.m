@@ -2,6 +2,7 @@
 
 #define TWEAK_TITLE "Messenger No Ads"
 #define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
+#define PREF_BUNDLE_PATH "/Library/PreferenceBundles/MNAPref.bundle"
 #define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
 #define kTintColor [UIColor colorWithRed:0.72 green:0.53 blue:1.00 alpha:1.00];
 
@@ -52,11 +53,14 @@ MNARootListController *sharedInstance;
 + (id)sharedInstance {
   return sharedInstance;
 }
-
++ (NSString *)localizedItem:(NSString *)key {
+  NSBundle *tweakBundle = [NSBundle bundleWithPath:@PREF_BUNDLE_PATH];
+  return [tweakBundle localizedStringForKey:key value:@"" table:@"Root"] ?: @"";
+}
 - (id)init {
   self = [super init];
   if (self) {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(apply)];;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MNARootListController localizedItem:@"APPLY"] style:UIBarButtonItemStylePlain target:self action:@selector(apply)];;
   }
   sharedInstance = self;
   return self;
@@ -76,6 +80,13 @@ MNARootListController *sharedInstance;
 - (NSArray *)specifiers {
   if (!_specifiers) {
     _specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
+  }
+  /** Localize sublabel **/
+  for (PSSpecifier *spec in _specifiers) {
+    NSString *sublabelValue = [spec.properties objectForKey:@"sublabel"];
+    if (sublabelValue) {
+      [spec setProperty:[MNARootListController localizedItem:sublabelValue] forKey:@"sublabel"];
+    }
   }
 
   /** Disable Hide Search Bar for ios 13 - begin **/
@@ -115,15 +126,15 @@ MNARootListController *sharedInstance;
  * Apply top right button
  */
 -(void)apply {
-  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@TWEAK_TITLE message:@"Do you really want to kill Messenger?" preferredStyle:UIAlertControllerStyleAlert];
-  UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+  UIAlertController *killConfirm = [UIAlertController alertControllerWithTitle:@TWEAK_TITLE message:[MNARootListController localizedItem:@"DO_YOU_REALLY_WANT_TO_KILL_MESSENGER"] preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:[MNARootListController localizedItem:@"CONFIRM"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
     NSTask *killall = [[NSTask alloc] init];
     [killall setLaunchPath:@"/usr/bin/killall"];
     [killall setArguments:@[@"-9", @"Messenger", @"LightSpeedApp"]];
     [killall launch];
   }];
 
-  UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+  UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[MNARootListController localizedItem:@"CANCEL"] style:UIAlertActionStyleCancel handler:nil];
   [killConfirm addAction:confirmAction];
   [killConfirm addAction:cancelAction];
   [self presentViewController:killConfirm animated:YES completion:nil];

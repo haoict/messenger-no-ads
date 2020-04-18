@@ -3,7 +3,7 @@
 <plist version="1.0">
   <dict>
     <key>CFBundleName</key>
-    <string>Messenger No Ads - Disable Read Recepit</string>
+    <string>Disable Read Recepit - Messenger No Ads</string>
     <key>CFBundleExecutable</key>
     <string>MNACCModule</string>
     <key>CFBundleIdentifier</key>

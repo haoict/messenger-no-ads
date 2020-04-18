@@ -40,6 +40,9 @@ FINALPACKAGE=1 make package
 
 [haoict](https://github.com/haoict)
 
+Thank you to my friends all around the world who helped me on translation: 
+mahmoud ahmad, Complex Assassin, Michael Basquill
+
 Contributions of any kind welcome!
 
 ## License

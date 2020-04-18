@@ -18,7 +18,7 @@
         <key>cell</key>
         <string>PSGroupCell</string>
         <key>label</key>
-        <string>Main Preferences</string>
+        <string>MAIN_PREFERENCES</string>
       </dict>
 
       <dict>
@@ -31,7 +31,7 @@
         <key>key</key>
         <string>noads</string>
         <key>label</key>
-        <string>No Ads</string>
+        <string>NO_ADS</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -46,7 +46,7 @@
         <key>key</key>
         <string>disablereadreceipt</string>
         <key>label</key>
-        <string>Disable Read Receipt</string>
+        <string>DISABLE_READ_RECEIPT</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -61,7 +61,7 @@
         <key>key</key>
         <string>disabletypingindicator</string>
         <key>label</key>
-        <string>Disable Typing Indicator</string>
+        <string>DISABLE_TYPING_INDICATOR</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -76,7 +76,7 @@
         <key>key</key>
         <string>disablestoryseenreceipt</string>
         <key>label</key>
-        <string>Disable Story Seen Receipt</string>
+        <string>DISABLE_STORY_SEEN_RECEIPT</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -91,7 +91,7 @@
         <key>key</key>
         <string>hidesearchbar</string>
         <key>label</key>
-        <string>Hide Search Bar (iOS 12 only)</string>
+        <string>HIDE_SEARCH_BAR</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -106,7 +106,7 @@
         <key>key</key>
         <string>hidestoriesrow</string>
         <key>label</key>
-        <string>Hide Stories Row</string>
+        <string>HIDE_STORIES_ROW</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -121,7 +121,7 @@
         <key>key</key>
         <string>hidepeopletab</string>
         <key>label</key>
-        <string>Hide People Tab</string>
+        <string>HIDE_PEOPLE_TAB</string>
         <key>PostNotification</key>
         <string>com.haoict.messengernoadspref/PrefChanged</string>
       </dict>
@@ -131,13 +131,13 @@
         <key>cell</key>
         <string>PSGroupCell</string>
         <key>label</key>
-        <string>Other Preferences</string>
+        <string>OTHER_PREFERENCES</string>
       </dict>
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>label</key>
-        <string>Reset Settings</string>
+        <string>RESET_SETTINGS</string>
         <key>action</key>
         <string>resetSettings:</string>
       </dict>
@@ -147,7 +147,7 @@
         <key>cell</key>
         <string>PSGroupCell</string>
         <key>label</key>
-        <string>Support Me</string>
+        <string>SUPPORT_ME</string>
       </dict>
       <dict>
         <key>cell</key>
@@ -165,9 +165,9 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>label</key>
-        <string>Donation 💰</string>
+        <string>DONATION</string>
         <key>sublabel</key>
-        <string>Buy me a coffee</string>
+        <string>BUY_ME_A_COFFEE</string>
         <key>action</key>
         <string>openURL:</string>
         <key>url</key>
@@ -177,9 +177,9 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>label</key>
-        <string>Feature Request? ✨</string>
+        <string>FEATURE_REQUEST</string>
         <key>sublabel</key>
-        <string>Send Me An Email With Your Request</string>
+        <string>SEND_ME_AN_EMAIL_WITH_YOUR_REQUEST</string>
         <key>action</key>
         <string>openURL:</string>
         <key>url</key>
@@ -189,7 +189,7 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>label</key>
-        <string>Source Code 🤖</string>
+        <string>SOURCE_CODE</string>
         <key>sublabel</key>
         <string>Github</string>
         <key>action</key>
@@ -201,9 +201,9 @@
         <key>cell</key>
         <string>PSLinkCell</string>
         <key>label</key>
-        <string>Found A Bug? 🐛</string>
+        <string>FOUND_A_BUG</string>
         <key>sublabel</key>
-        <string>Leave A Bug Report on Github</string>
+        <string>LEAVE_A_BUG_REPORT_ON_GITHUB</string>
         <key>action</key>
         <string>openURL:</string>
         <key>url</key>
