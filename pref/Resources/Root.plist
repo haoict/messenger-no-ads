@@ -7,13 +7,21 @@
       <dict>
         <key>cell</key>
         <string>PSGroupCell</string>
-        <key>footerCellClass</key>
-        <string>MNAHeader</string>
+        <key>headerCellClass</key>
+        <string>HaoPSHeaderImageCellCustom</string>
+        <key>image</key>
+        <string>/Library/PreferenceBundles/MNAPref.bundle/Banner.jpg</string>
       </dict>
-      <dict>
+
+      <!-- <dict>
         <key>cell</key>
         <string>PSGroupCell</string>
-      </dict>
+        <key>headerCellClass</key>
+        <string>HaoPSHeaderCellCustom</string>
+        <key>label</key>
+        <string>Messenger No Ads</string>
+      </dict> -->
+
       <dict>
         <key>cell</key>
         <string>PSGroupCell</string>
@@ -24,6 +32,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <true/>
         <key>defaults</key>
@@ -39,6 +49,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <true/>
         <key>defaults</key>
@@ -54,6 +66,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <true/>
         <key>defaults</key>
@@ -69,6 +83,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <true/>
         <key>defaults</key>
@@ -84,6 +100,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <true/>
         <key>defaults</key>
@@ -99,6 +117,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <false/>
         <key>defaults</key>
@@ -114,6 +134,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <false/>
         <key>defaults</key>
@@ -129,6 +151,8 @@
       <dict>
         <key>cell</key>
         <string>PSSwitchCell</string>
+        <key>cellClass</key>
+        <string>HaoPSSwitchCellCustom</string>
         <key>default</key>
         <false/>
         <key>defaults</key>
@@ -151,6 +175,8 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>RESET_SETTINGS</string>
         <key>action</key>
@@ -167,9 +193,11 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>Hao Nguyen 👨🏻‍💻</string>
-        <key>sublabel</key>
+        <key>subtitle</key>
         <string>@haoict</string>
         <key>action</key>
         <string>openURL:</string>
@@ -179,9 +207,11 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>DONATION</string>
-        <key>sublabel</key>
+        <key>subtitle</key>
         <string>BUY_ME_A_COFFEE</string>
         <key>action</key>
         <string>openURL:</string>
@@ -191,9 +221,11 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>FEATURE_REQUEST</string>
-        <key>sublabel</key>
+        <key>subtitle</key>
         <string>SEND_ME_AN_EMAIL_WITH_YOUR_REQUEST</string>
         <key>action</key>
         <string>openURL:</string>
@@ -203,9 +235,11 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>SOURCE_CODE</string>
-        <key>sublabel</key>
+        <key>subtitle</key>
         <string>Github</string>
         <key>action</key>
         <string>openURL:</string>
@@ -215,9 +249,11 @@
       <dict>
         <key>cell</key>
         <string>PSLinkCell</string>
+        <key>cellClass</key>
+        <string>HaoPSLinkCellCustom</string>
         <key>label</key>
         <string>FOUND_A_BUG</string>
-        <key>sublabel</key>
+        <key>subtitle</key>
         <string>LEAVE_A_BUG_REPORT_ON_GITHUB</string>
         <key>action</key>
         <string>openURL:</string>

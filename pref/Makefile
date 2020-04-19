@@ -5,8 +5,8 @@ include $(THEOS)/makefiles/common.mk
 BUNDLE_NAME = MNAPref
 MNAPref_FILES = $(wildcard *.m)
 MNAPref_INSTALL_PATH = /Library/PreferenceBundles
-MNAPref_FRAMEWORKS = UIKit
 MNAPref_PRIVATE_FRAMEWORKS = Preferences
+MNAPref_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
