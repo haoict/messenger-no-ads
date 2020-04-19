@@ -6,7 +6,7 @@
 The best free & open source tweak for Messenger  
 Not only removing ads but shipped with many nice features
 
-<img src="https://haoict.github.io/cydia/images/newmessengernoads.jpg" alt="Messenger No Ads" width="414"/>
+<img src="https://haoict.github.io/cydia/images/mnabanner.jpg" alt="Messenger No Ads" width="414"/>
 
 ## Features
 
@@ -22,6 +22,11 @@ Not only removing ads but shipped with many nice features
 ## Cydia Repo
 
 [https://haoict.github.io/cydia](https://haoict.github.io/cydia)
+
+## Screenshot
+
+<img src="https://haoict.github.io/cydia/images/mnapref.png" alt="Messenger No Ads Preferences" width="280"/>
+<img src="https://haoict.github.io/cydia/images/mnacc.jpg" alt="Messenger No Ads Control Center Support" width="280"/>
 
 ## Building
 
@@ -44,7 +49,7 @@ Contributions of any kind welcome!
 
 ## License
 
-Licensed under the MIT License, Copyright © 2020-present Hao Nguyen <hao.ict56@gmail.com>
+Licensed under the [GPLv3 License](./LICENSE), Copyright © 2020-present Hao Nguyen <hao.ict56@gmail.com>
 
 ## [Note] Advanced thingy for development
 <details>

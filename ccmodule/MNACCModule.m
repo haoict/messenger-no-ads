@@ -15,7 +15,7 @@
 }
 
 - (UIColor *)selectedColor {
-  return [UIColor colorWithRed:0.28 green:0.21 blue:0.58 alpha:1.00];
+  return [UIColor colorWithRed: 0.81 green: 0.19 blue: 0.95 alpha: 1.00];
 }
 
 - (BOOL)isSelected {
