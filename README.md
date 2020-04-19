@@ -33,7 +33,12 @@ make do
 
 ## Contributors
 
-Thank you to my friends all around the world who helped me on translation: mahmoud ahmad, Complex Assassin, Michael Basquill, BenCoro
+Thank you to my friends all around the world who helped me on translation:  
+- mahmoud ahmad  
+- Complex Assassin  
+- Michael Basquill  
+- BenCoro  
+- TC@BE  
 
 Contributions of any kind welcome!
 
