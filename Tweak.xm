@@ -102,13 +102,42 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     }
   %end
 
-  %hook MBUIStoryViewerAuthorOverlayModel
-    - (NSString *)authorId {
-      if (cansavefriendsstory) {
-        NSString *userId = [[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId];
-        return userId;
+  %hook LSStoryOverlayProfileView
+    - (void)_handleOverflowMenuButton:(UIButton *)arg1 {
+      // check if this story is mine
+      MBUIStoryViewerAuthorOverlayModel *_authorOverlayModel = MSHookIvar<MBUIStoryViewerAuthorOverlayModel *>(self, "_authorOverlayModel");
+      if ([_authorOverlayModel.authorId isEqual:[[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId]]) {
+        %orig;
+        return;
       }
-      return %orig;
+
+      // otherwise show alert with save and original actions
+      LSStoryOverlayViewController * overlayVC = (LSStoryOverlayViewController *)[[[self nextResponder] nextResponder] nextResponder];
+      LSStoryBucketViewController * bucketVC = overlayVC.parentViewController;
+      [bucketVC _pauseProgressIndicatorWithReset:FALSE];
+
+      UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+      UIAlertAction *saveStoryAction = [UIAlertAction actionWithTitle:@"Save Story" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        LSMediaViewController * mediaVC = bucketVC.currentThreadVC;
+        [mediaVC saveMedia];
+      }];
+      UIAlertAction *otherOptionsAction = [UIAlertAction actionWithTitle:@"Options" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        %orig;
+      }];
+      UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        [bucketVC startTimer];
+      }];
+      [alert addAction:saveStoryAction];
+      [alert addAction:otherOptionsAction];
+      [alert addAction:cancelAction];
+
+      if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+        [alert setModalPresentationStyle:UIModalPresentationPopover];
+        UIPopoverPresentationController *popPresenter = [alert popoverPresentationController];
+        popPresenter.sourceView = arg1;
+        popPresenter.sourceRect = arg1.bounds;
+      }
+      [overlayVC presentViewController:alert animated:YES completion:nil];
     }
   %end
 %end
