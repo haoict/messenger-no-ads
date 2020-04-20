@@ -1,6 +1,6 @@
 {
   "APPLY" = "Appliquer";
-  "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Voulez-vous vraiment fermer Messenger ?";
+  "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Voulez-vous vraiment fermer Messenger?";
   "CONFIRM" = "Confirmer";
   "CANCEL" = "Annuler";
   "MAIN_PREFERENCES" = "Réglages principaux";
@@ -9,7 +9,7 @@
   "DISABLE_TYPING_INDICATOR" = "Désactiver indicateur d'écriture";
   "DISABLE_STORY_SEEN_RECEIPT" = "Désactiver confirmation de vue Story";
   "CAN_SAVE_FRIENDS_STORY" = "Enregistrer la Story d'un ami";
-  "HIDE_SEARCH_BAR" = "Cacher la barre de recherche (uniquement pour iOS 12)";
+  "HIDE_SEARCH_BAR" = "Cacher barre de recherche (iOS12)";
   "HIDE_STORIES_ROW" = "Cacher la rangée des Stories";
   "HIDE_PEOPLE_TAB" = "Cacher l'onglet Personnes";
   "OTHER_PREFERENCES" = "Autres réglages";
