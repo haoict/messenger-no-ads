@@ -75,8 +75,15 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
 %group DisableTypingIndicator
   %hook LSComposerViewController
-    - (void)_updateComposerEventWithTextViewChanged:(id)arg1 {
+    - (void)_updateComposerEventWithTextViewChanged:(LSTextView *)arg1 {
       if (!disabletypingindicator) {
+        %orig;
+        return;
+      }
+
+      LSComposerView *_composerView = MSHookIvar<LSComposerView *>(self, "_composerView");
+      LSComposerComponentStackView *_topStackView = MSHookIvar<LSComposerComponentStackView *>(_composerView, "_topStackView");
+      if (_topStackView.frame.size.height > 0.0 || [arg1.text containsString:@"@"]) {
         %orig;
       }
     }

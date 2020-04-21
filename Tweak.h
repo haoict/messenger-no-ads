@@ -32,3 +32,12 @@
 @interface LSStoryOverlayProfileView : UIView
 @property(nonatomic) LSStoryOverlayViewController * delegate;
 @end
+
+@interface LSTextView : UITextView
+@end
+
+@interface LSComposerView : NSObject
+@end
+
+@interface LSComposerComponentStackView : UIView
+@end
