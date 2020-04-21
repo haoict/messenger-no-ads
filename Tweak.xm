@@ -56,6 +56,11 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       return resultRows;
     }
   %end
+
+  %hook LSStoryViewerContentController
+    - (void)_issueAdsFetchWithCurrentSync:(id)arg1 startIndex:(int)arg2 bucketStoryModels:(id)arg3 {
+    }
+  %end
 %end
 
 %group DisableReadReceipt
@@ -120,6 +125,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       UIAlertAction *saveStoryAction = [UIAlertAction actionWithTitle:@"Save Story" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         LSMediaViewController * mediaVC = bucketVC.currentThreadVC;
         [mediaVC saveMedia];
+        [bucketVC startTimer];
       }];
       UIAlertAction *otherOptionsAction = [UIAlertAction actionWithTitle:@"Options" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         %orig;
