@@ -1,0 +1,25 @@
+{
+  "APPLY" = "Toepassen";
+  "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Wil je Messenger echt afsluiten?";
+  "CONFIRM" = "Bevestig";
+  "CANCEL" = "Annuleren";
+  "MAIN_PREFERENCES" = "Hoofdvoorkeuren";
+  "NO_ADS" = "Geen advertenties";
+  "DISABLE_READ_RECEIPT" = "Leesbevestiging uitschakelen";
+  "DISABLE_TYPING_INDICATOR" = "Typindicator uitschakelen";
+  "DISABLE_STORY_SEEN_RECEIPT" = "Gezien ontvangstbewijs uitschakelen";
+  "CAN_SAVE_FRIENDS_STORY" = "Kan het verhaal van een vriend opslaan";
+  "HIDE_SEARCH_BAR" = "Zoekbalk verbergen (alleen iOS 12)";
+  "HIDE_STORIES_ROW" = "Verhalenrij verbergen";
+  "HIDE_PEOPLE_TAB" = "Tabblad Personen verbergen";
+  "OTHER_PREFERENCES" = "Andere voorkeuren";
+  "RESET_SETTINGS" = "Instellingen resetten";
+  "SUPPORT_ME" = "Steun mij";
+  "DONATION" = "Donatie 💰";
+  "BUY_ME_A_COFFEE" = "Koop me een kopje koffie";
+  "FEATURE_REQUEST" = "Functieverzoek ✨";
+  "SEND_ME_AN_EMAIL_WITH_YOUR_REQUEST" = "Stuur me een e-mail met uw verzoek";
+  "SOURCE_CODE" = "Broncode 🤖";
+  "FOUND_A_BUG" = "Bug gevonden 🐛";
+  "LEAVE_A_BUG_REPORT_ON_GITHUB" = "Laat een bugrapport achter op Github";
+}

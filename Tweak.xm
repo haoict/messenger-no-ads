@@ -13,7 +13,8 @@ BOOL hidestoriesrow;
 BOOL hidepeopletab;
 
 static void reloadPrefs() {
-  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:@PLIST_PATH];
+  NSString *_plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
+  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:_plistPath];
 
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] ?: @(YES) boolValue];
@@ -116,6 +117,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
   %hook LSStoryOverlayProfileView
     - (void)_handleOverflowMenuButton:(UIButton *)arg1 {
+      if (!cansavefriendsstory) {
+        %orig;
+        return;
+      }
       // check if this story is mine
       MBUIStoryViewerAuthorOverlayModel *_authorOverlayModel = MSHookIvar<MBUIStoryViewerAuthorOverlayModel *>(self, "_authorOverlayModel");
       if ([_authorOverlayModel.authorId isEqual:[[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId]]) {
@@ -159,7 +164,9 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %hook UITabBarController
     - (UITabBar *)tabBar {
       UITabBar *orig = %orig;
-      orig.hidden = true;
+      if (hidepeopletab) {
+        orig.hidden = true;
+      }
       return orig;
     }
   %end
@@ -168,10 +175,52 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %group HideSearchBar
   %hook UINavigationController
     - (void)_createAndAttachSearchPaletteForTransitionToTopViewControllerIfNecesssary:(id)arg1 {
+      if (!hidesearchbar) {
+        %orig;
+      }
     }
   %end
 %end
 
+%group QuickOpenPref
+  %hook LSTabBarDataSource
+    - (void)openAppSettingsFromInboxViewController:(UIViewController *)arg1 {
+      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger No Ads Settings ⭐️" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
+        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
+        [arg1 presentViewController:navVC animated:YES completion:nil];
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        %orig;
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+      [arg1 presentViewController:alert animated:YES completion:nil];
+      
+      /*
+      NSString *path = @"prefs:root=Messenger No Ads";
+      path = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+      NSURL*url = [NSURL URLWithString:path];
+
+      UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"url" message:path preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Open new pref view" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
+        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
+        [arg1 presentViewController:navVC animated:YES completion:nil];
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Go to Preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // not working
+        [[UIApplication sharedApplication] _openURL:url];
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Compose new message" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        %orig;
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+      [arg1 presentViewController:alert animated:YES completion:nil];
+      */
+    }
+  %end
+%end
 
 /**
  * Constructor
@@ -187,13 +236,8 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %init(DisableTypingIndicator);
   %init(DisableStorySeenReceipt);
   %init(CanSaveFriendsStory);
-
-  if (hidesearchbar) {
-    %init(HideSearchBar);
-  }
-
-  if (hidepeopletab) {
-    %init(HidePeopleTab);
-  }
+  %init(HideSearchBar);
+  %init(HidePeopleTab);
+  %init(QuickOpenPref);
 }
 
