@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
-
-#define PLIST_PATH "/var/mobile/Library/Preferences/com.haoict.messengernoadspref.plist"
-#define PREF_CHANGED_NOTIF "com.haoict.messengernoadspref/PrefChanged"
+#import "settingsview/MNAUtil.h"
+#import "settingsview/MNASettingsViewController.h"
 
 @interface LSAppDelegate : NSObject
 + (id)sharedInstance;
@@ -41,3 +40,7 @@
 
 @interface LSComposerComponentStackView : UIView
 @end
+
+// @interface UIApplication (Custom)
+// - (BOOL)_openURL:(id)arg1 ;
+// @end
