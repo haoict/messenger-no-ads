@@ -48,7 +48,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
       for (int i = 1; i < [orig count]; i++) {
         NSArray *row = orig[i];
-        if (!noads || (noads && [row[1] intValue] != 2)) {
+        if (!noads || (noads && [row[1] intValue] != 2) || ([row[2] isKindOfClass:[NSArray class]] && [row[2][1] isEqual:@"message_requests_spam_unit"])) {
           [resultRows addObject:row];
         }
       }
