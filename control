@@ -2,13 +2,14 @@ Package: com.haoict.messengernoads-beta
 Name: Messenger No Ads Beta
 Depends: mobilesubstrate, firmware (>= 10)
 Conflicts: com.haoict.messengernoads
-Version: 3.0.0~b1
+Version: 3.0.0~b3
 Architecture: iphoneos-arm
 Description: The best tweak for Messenger app.
  The best tweak for Messenger app.
+ * Tap on your profile picture on top right of the screen to access settings
  Features:
  - Hide Ads on Messenger app
- - Disable Read Receipt (Support Control Center to quick turn on/off)
+ - Disable Read Receipt
  - Disable Typing Indicator
  - Disable Story Seen Receipt
  - Can Save Friend's Story

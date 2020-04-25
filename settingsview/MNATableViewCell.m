@@ -3,6 +3,13 @@
 #define LABEL_COLOR "#333333"
 #define SUBTITLE_COLOR "#828282"
 #define STATIC_BACKGROUND_COLOR "#EFEFF4"
+#define CELL_BACKGROUND_COLOR "#FFFFFF"
+
+#define LABEL_COLOR_DARKMODE "#F2F2F2"
+#define SUBTITLE_COLOR_DARKMODE "#888888"
+#define STATIC_BACKGROUND_COLOR_DARKMODE "#000000"
+#define CELL_BACKGROUND_COLOR_DARKMODE "#1C1C1C"
+
 #define STATIC_FONT_SIZE 13.0
 
 @implementation MNATableViewCell
@@ -14,10 +21,10 @@
 
   if (self) {
     self.textLabel.text = cellData.label;
-    self.textLabel.textColor = [MNAUtil colorFromHex:@LABEL_COLOR];
+    self.textLabel.textColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @LABEL_COLOR_DARKMODE : @LABEL_COLOR];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.detailTextLabel.text = cellData.subtitle;
-    self.detailTextLabel.textColor = [MNAUtil colorFromHex:@SUBTITLE_COLOR];
+    self.detailTextLabel.textColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @SUBTITLE_COLOR_DARKMODE : @SUBTITLE_COLOR];
     if (cellData.disabled) {
       self.userInteractionEnabled = NO;
       self.textLabel.enabled = NO;
@@ -38,7 +45,7 @@
 
       case StaticText: {
         self.textLabel.font=[UIFont systemFontOfSize:STATIC_FONT_SIZE];
-        self.contentView.backgroundColor = [MNAUtil colorFromHex:@STATIC_BACKGROUND_COLOR];
+        self.contentView.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @STATIC_BACKGROUND_COLOR_DARKMODE : @STATIC_BACKGROUND_COLOR];
         break;
       }
 
@@ -64,23 +71,23 @@
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
   [super setHighlighted:highlighted animated:animated];
-  if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
-    if (highlighted) {
-      self.contentView.superview.backgroundColor = [kTintColor colorWithAlphaComponent:0.3];
-    } else {
-      self.contentView.superview.backgroundColor = [UIColor whiteColor];
+  if (highlighted) {
+    if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
+      self.contentView.superview.backgroundColor = [[MNAUtil colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
     }
+  } else {
+    self.contentView.superview.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
   }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
   [super setSelected:selected animated:animated];
-  if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
-    if (selected) {
-      self.contentView.superview.backgroundColor = [kTintColor colorWithAlphaComponent:0.3];
-    } else {
-      self.contentView.superview.backgroundColor = [UIColor whiteColor];
+  if (selected) {
+    if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
+      self.contentView.superview.backgroundColor = [[MNAUtil colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
     }
+  } else {
+    self.contentView.superview.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
   }
 }
 
@@ -125,10 +132,4 @@
     switchView.enabled = NO;
   }
 }
-
-// - (void)resetSettings:(id)sender {
-//   [@{} writeToFile:@PLIST_PATH atomically:YES];
-//   [self reloadSpecifiers];
-//   notify_post(PREF_CHANGED_NOTIF);
-// }
 @end

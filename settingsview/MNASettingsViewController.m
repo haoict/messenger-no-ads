@@ -1,6 +1,7 @@
 #include "MNASettingsViewController.h"
 
 #define TABLE_BACKGROUND_COLOR "#EFEFF4"
+#define TABLE_BACKGROUND_COLOR_DARKMODE "#000000"
 
 @implementation MNASettingsViewController
 - (id)init {
@@ -43,11 +44,11 @@
   [super viewWillAppear:animated];
   // set switches color
   UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-  self.view.tintColor = kTintColor;
-  keyWindow.tintColor = kTintColor;
-  [UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]].onTintColor = kTintColor;
+  self.view.tintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  keyWindow.tintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  [UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]].onTintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
   // set navigation bar color
-  self.navigationController.navigationBar.barTintColor = kTintColor;
+  self.navigationController.navigationBar.barTintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
   self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
   [self.navigationController.navigationBar setShadowImage: [UIImage new]];
   self.navigationController.navigationController.navigationBar.translucent = NO;
@@ -59,7 +60,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-  keyWindow.tintColor = [UIColor blackColor]; // should be nil for default, but Messenger uses black
+  keyWindow.tintColor = [MNAUtil isDarkMode] ? [UIColor whiteColor] : [UIColor blackColor]; // should be nil for default, but Messenger uses black/white
   self.navigationController.navigationBar.barTintColor = nil;
   self.navigationController.navigationBar.tintColor = nil;
   [self.navigationController.navigationBar setShadowImage:nil];
@@ -81,7 +82,7 @@
   _tableView.delegate = self;
   _tableView.dataSource = self;
   _tableView.alwaysBounceVertical = NO;
-  _tableView.backgroundColor = [MNAUtil colorFromHex:@TABLE_BACKGROUND_COLOR];
+  _tableView.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @TABLE_BACKGROUND_COLOR_DARKMODE : @TABLE_BACKGROUND_COLOR];
   [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
   [self.view addSubview:_tableView];
   

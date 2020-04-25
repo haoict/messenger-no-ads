@@ -39,4 +39,19 @@
     [vc presentViewController:alert animated:YES completion:nil];
   }
 }
+
++ (BOOL)isDarkMode {
+  if (@available(iOS 12.0, *)) {
+    if(UIScreen.mainScreen.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+      return TRUE;
+    }else{
+      return FALSE;
+    }
+  }
+  return FALSE;
+}
+
++ (BOOL)isiPad {
+  return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
 @end
