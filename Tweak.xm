@@ -196,28 +196,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       }]];
       [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
       [arg1 presentViewController:alert animated:YES completion:nil];
-      
-      /*
-      NSString *path = @"prefs:root=Messenger No Ads";
-      path = [path stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-      NSURL*url = [NSURL URLWithString:path];
-
-      UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"url" message:path preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Open new pref view" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
-        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
-        [arg1 presentViewController:navVC animated:YES completion:nil];
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Go to Preferences" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        // not working
-        [[UIApplication sharedApplication] _openURL:url];
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Compose new message" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        %orig;
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-      [arg1 presentViewController:alert animated:YES completion:nil];
-      */
     }
   %end
 %end

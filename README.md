@@ -9,15 +9,15 @@ Not only removing ads but shipped with many nice features
 <img src="https://haoict.github.io/cydia/images/mnabanner.jpg" alt="Messenger No Ads" width="414"/>
 
 ## Features
-
+*Tap on your profile picture on top right of the screen to access settings*
 - No Ads
-- Disable Read Receipt. Can be added to Control center for quickly turn on/off. *Go to Setting -> Control Center -> Customize Controls -> Add Messenger No Ads*
+- Disable Read Receipt
 - Disable Typing Indicator
 - Disable Story Seen (see others's stories but they won't know it)
 - Can save friend's story. (Tap ... on top right of story view -> Save)
 - Hide Search Bar (iOS12) / Hide Stories Row / Hide People tab
 - Support iOS 11 (tested) - 12 (tested) - 13 (tested)
-- Support latest Messenger version (If it doesn't work, you should update the app to latest version 258.0 - 260.1)
+- Support latest Messenger version (If it doesn't work, you should update the app to latest version >=258.0)
 
 ## Cydia Repo
 
@@ -26,7 +26,6 @@ Not only removing ads but shipped with many nice features
 ## Screenshot
 
 <img src="https://haoict.github.io/cydia/images/mnapref.png" alt="Messenger No Ads Preferences" width="280"/>
-<img src="https://haoict.github.io/cydia/images/mnacc.jpg" alt="Messenger No Ads Control Center Support" width="280"/>
 
 ## Building
 
