@@ -12,6 +12,7 @@ BOOL cansavefriendsstory;
 BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
+BOOL showTheEyeButton;
 NSString *plistPath;
 NSMutableDictionary *settings;
 
@@ -28,6 +29,7 @@ static void reloadPrefs() {
   hidesearchbar = [[settings objectForKey:@"hidesearchbar"] ?: @(NO) boolValue];
   hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"] ?: @(NO) boolValue];
   hidepeopletab = [[settings objectForKey:@"hidepeopletab"] ?: @(NO) boolValue];
+  showTheEyeButton = [[settings objectForKey:@"showTheEyeButton"] ?: @(YES) boolValue];
 }
 static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
   reloadPrefs();
@@ -58,7 +60,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
     - (void)viewDidAppear:(BOOL)arg1 {
       %orig;
-
       if (!hasCompletedIntroduction) {
         [self presentViewController:[MNAIntroViewController new] animated:YES completion:nil];
       }
@@ -66,7 +67,13 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
     - (void)viewDidLoad {
       %orig;
+      if (showTheEyeButton) {
+        [self initEyeButton];
+      }
+    }
 
+    %new
+    - (void)initEyeButton {
       self.sideSwitch = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, self.view.frame.size.height / 2, 50, 50)];
       self.sideSwitch.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
       self.sideSwitch.layer.cornerRadius = 10;
@@ -88,7 +95,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
     %new
     - (void)handleSideSwitchTap:(UITapGestureRecognizer *)recognizer {
-      // flag completed introduction
       [settings setObject:[NSNumber numberWithBool:!disablereadreceipt] forKey:@"disablereadreceipt"];
       BOOL success = [settings writeToFile:plistPath atomically:YES];
 

@@ -1,5 +1,6 @@
 {
   "APPLY" = "Appliquer";
+  "APP_RESTART_REQUIRED" = "Redémarrage de l'application requis";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Voulez-vous vraiment fermer Messenger?";
   "WELCOME_TO_MESSENGER_NO_ADS" = "Bienvenue sur Messenger No Ads";
   "INTRO_TEXT_GUIDE" = "Appuyez sur votre photo de profil dans le coin supérieur gauche de l'écran pour accéder aux paramètres";
@@ -15,6 +16,7 @@
   "HIDE_STORIES_ROW" = "Cacher la rangée des Stories";
   "HIDE_PEOPLE_TAB" = "Cacher l'onglet Personnes";
   "OTHER_PREFERENCES" = "Autres réglages";
+  "SHOW_THE_EYE_BUTTON" = "Afficher le bouton oeil";
   "RESET_SETTINGS" = "Réinitialiser les réglages";
   "SUPPORT_ME" = "Me soutenir";
   "DONATION" = "Contribution 💰";

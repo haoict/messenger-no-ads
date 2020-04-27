@@ -99,6 +99,10 @@
     [MNAUtil showAlertMessage:@"Can't write file: %@" title:@"Error" viewController:_vc];
   } else {
     notify_post(PREF_CHANGED_NOTIF);
+
+    if (_cellData.isRestartRequired) {
+      [MNAUtil showRequireRestartAlert:_vc];
+    }
   }
 }
 

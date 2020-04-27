@@ -138,6 +138,7 @@
   MNACellModel *hideSearchBarSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"HIDE_SEARCH_BAR"]];
   hideSearchBarSwitchCell.prefKey = @"hidesearchbar";
   hideSearchBarSwitchCell.defaultValue = @"false";
+  hideSearchBarSwitchCell.isRestartRequired = TRUE;
   if (@available(iOS 13, *)) {
     hideSearchBarSwitchCell.disabled = TRUE;
   }
@@ -147,8 +148,13 @@
   MNACellModel *hidePeopleTabSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"HIDE_PEOPLE_TAB"]];
   hidePeopleTabSwitchCell.prefKey = @"hidepeopletab";
   hidePeopleTabSwitchCell.defaultValue = @"false";
+  hidePeopleTabSwitchCell.isRestartRequired = TRUE;
 
   MNACellModel *otherPreferencesCell = [[MNACellModel alloc] initWithType:StaticText withLabel:@" " withSubtitle:[[MNAUtil localizedItem:@"OTHER_PREFERENCES"] uppercaseString]];
+  MNACellModel *showTheEyeButtonSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"SHOW_THE_EYE_BUTTON"]];
+  showTheEyeButtonSwitchCell.prefKey = @"showTheEyeButton";
+  showTheEyeButtonSwitchCell.defaultValue = @"true";
+  showTheEyeButtonSwitchCell.isRestartRequired = TRUE;
   MNACellModel *resetSettingsButtonCell = [[MNACellModel alloc] initWithType:Button withLabel:[MNAUtil localizedItem:@"RESET_SETTINGS"]];
   resetSettingsButtonCell.buttonAction = @selector(resetSettings);
 
@@ -178,6 +184,7 @@
   [_tableData addObject:hidePeopleTabSwitchCell];
 
   [_tableData addObject:otherPreferencesCell];
+  [_tableData addObject:showTheEyeButtonSwitchCell];
   [_tableData addObject:resetSettingsButtonCell];
 
   [_tableData addObject:supportMeCell];

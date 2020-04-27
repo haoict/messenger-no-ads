@@ -12,8 +12,9 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (nonatomic) NSString * subtitle;
 @property (nonatomic) NSString * prefKey;
 @property (nonatomic) NSString * defaultValue;
-@property (nonatomic) NSString * url;
-@property (nonatomic) SEL buttonAction;
+@property (nonatomic) NSString * url; // only for Link type
+@property (nonatomic) SEL buttonAction; // only for Button type
+@property (nonatomic) BOOL isRestartRequired; // only for Button type
 @property (nonatomic) BOOL disabled;
 
 - (MNACellModel *)initWithType:(CellType)type withLabel:(NSString *)label;

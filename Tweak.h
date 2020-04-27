@@ -11,6 +11,7 @@
 @interface MSGSplitViewController : UIViewController
 @property (nonatomic, retain) UIView *sideSwitch; // new property
 @property (nonatomic, retain) UIImageView *imageView; // new property
+- (void)initEyeButton; // new method
 @end
 
 @interface MBUIStoryViewerAuthorOverlayModel : UIView

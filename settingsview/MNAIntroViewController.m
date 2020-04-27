@@ -82,7 +82,6 @@
 
   NSString *plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
   NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath] ?: [@{} mutableCopy];
-  NSLog(@"hao--%@-%@", plistPath, settings);
   // flag completed introduction
   [settings setObject:[NSNumber numberWithBool:TRUE] forKey:@"hasCompletedIntroduction"];
   BOOL success = [settings writeToFile:plistPath atomically:YES];

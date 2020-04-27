@@ -1,5 +1,6 @@
 {
   "APPLY" = "Áp dụng";
+  "APP_RESTART_REQUIRED" = "Cần khởi chạy lại ứng dụng";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Bạn có muốn tắt Messenger?";
   "WELCOME_TO_MESSENGER_NO_ADS" = "Chào mừng đến với Messenger No Ads";
   "INTRO_TEXT_GUIDE" = "Ấn vào ảnh đại diện của bạn ở góc trên bên trái để truy cập cài đặt";
@@ -15,6 +16,7 @@
   "HIDE_STORIES_ROW" = "Ẩn hàng story";
   "HIDE_PEOPLE_TAB" = "Ẩn tab Mọi người";
   "OTHER_PREFERENCES" = "Tùy chỉnh phụ";
+  "SHOW_THE_EYE_BUTTON" = "Hiện nút con mắt";
   "RESET_SETTINGS" = "Đặt lại tùy chỉnh";
   "SUPPORT_ME" = "Hỗ trợ tôi";
   "DONATION" = "Ủng hộ 💰";

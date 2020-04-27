@@ -30,6 +30,7 @@
 + (NSString *)localizedItem:(NSString *)key;
 + (UIColor *)colorFromHex:(NSString *)hexString;
 + (void)showAlertMessage:(NSString *)message title:(NSString *)title viewController:(id)vc;
++ (void)showRequireRestartAlert:(UIViewController *)vc;
 + (BOOL)isDarkMode;
 + (BOOL)isiPad;
 @end

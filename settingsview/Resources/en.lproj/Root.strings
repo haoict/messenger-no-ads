@@ -1,5 +1,6 @@
 {
   "APPLY" = "Apply";
+  "APP_RESTART_REQUIRED" = "App restart required";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Do you really want to kill Messenger?";
   "WELCOME_TO_MESSENGER_NO_ADS" = "Welcome to Messenger No Ads";
   "INTRO_TEXT_GUIDE" = "Tap on your profile picture at the top-left corner of the screen to access settings";
@@ -15,6 +16,7 @@
   "HIDE_STORIES_ROW" = "Hide Stories Row";
   "HIDE_PEOPLE_TAB" = "Hide People Tab";
   "OTHER_PREFERENCES" = "Other Preferences";
+  "SHOW_THE_EYE_BUTTON" = "Show The Eye Button";
   "RESET_SETTINGS" = "Reset Settings";
   "SUPPORT_ME" = "Support Me";
   "DONATION" = "Donation 💰";
