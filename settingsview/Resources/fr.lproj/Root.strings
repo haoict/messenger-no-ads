@@ -1,6 +1,8 @@
 {
   "APPLY" = "Appliquer";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Voulez-vous vraiment fermer Messenger?";
+  "WELCOME_TO_MESSENGER_NO_ADS" = "Bienvenue sur Messenger No Ads";
+  "INTRO_TEXT_GUIDE" = "Appuyez sur votre photo de profil dans le coin supérieur gauche de l'écran pour accéder aux paramètres";
   "CONFIRM" = "Confirmer";
   "CANCEL" = "Annuler";
   "MAIN_PREFERENCES" = "Réglages principaux";

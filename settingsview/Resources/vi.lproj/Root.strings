@@ -1,6 +1,8 @@
 {
   "APPLY" = "Áp dụng";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Bạn có muốn tắt Messenger?";
+  "WELCOME_TO_MESSENGER_NO_ADS" = "Chào mừng đến với Messenger No Ads";
+  "INTRO_TEXT_GUIDE" = "Ấn vào ảnh đại diện của bạn ở góc trên bên trái để truy cập cài đặt";
   "CONFIRM" = "Xác nhận";
   "CANCEL" = "Hủy";
   "MAIN_PREFERENCES" = "Tùy chỉnh chính";

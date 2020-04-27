@@ -3,6 +3,7 @@
 /**
  * Load Preferences
  */
+BOOL hasCompletedIntroduction;
 BOOL noads;
 BOOL disablereadreceipt;
 BOOL disabletypingindicator;
@@ -11,11 +12,14 @@ BOOL cansavefriendsstory;
 BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
+NSString *plistPath;
+NSMutableDictionary *settings;
 
 static void reloadPrefs() {
-  NSString *_plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
-  NSDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:_plistPath];
+  plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
+  settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
 
+  hasCompletedIntroduction = [[settings objectForKey:@"hasCompletedIntroduction"] ?: @(NO) boolValue];
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
   disablereadreceipt = [[settings objectForKey:@"disablereadreceipt"] ?: @(YES) boolValue];
   disabletypingindicator = [[settings objectForKey:@"disabletypingindicator"] ?: @(YES) boolValue];
@@ -33,6 +37,48 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 /**
  * Tweak's hooking code
  */
+%group CommonGroup
+  %hook LSAppDelegate
+    static LSAppDelegate *__weak sharedInstance;
+
+    - (void)applicationDidBecomeActive:(id)arg1 {
+      %orig;
+      sharedInstance = self;
+    }
+
+    %new
+    + (id)sharedInstance {
+      return sharedInstance;
+    }
+  %end
+
+  %hook MSGSplitViewController
+    - (void)viewDidAppear:(BOOL)arg1 {
+      %orig;
+
+      if (!hasCompletedIntroduction) {
+        [self presentViewController:[MNAIntroViewController new] animated:YES completion:nil];
+      }
+    }
+  %end
+
+  %hook LSTabBarDataSource
+    - (void)openAppSettingsFromInboxViewController:(UIViewController *)arg1 {
+      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:[MNAUtil isiPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger No Ads Settings ⭐️" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
+        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
+        [arg1 presentViewController:navVC animated:YES completion:nil];
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        %orig;
+      }]];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+      [arg1 presentViewController:alert animated:YES completion:nil];
+    }
+  %end
+%end
+
 %group NoAdsNoStoriesRow
   %hook MSGThreadListDataSource
     - (NSArray *)inboxRows {
@@ -102,19 +148,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %end
 
 %group CanSaveFriendsStory
-  %hook LSAppDelegate
-    static LSAppDelegate *__weak sharedInstance;
-    - (void)applicationDidBecomeActive:(id)arg1 {
-      %orig;
-      sharedInstance = self;
-    }
-
-    %new
-    + (id)sharedInstance {
-      return sharedInstance;
-    }
-  %end
-
   %hook LSStoryOverlayProfileView
     - (void)_handleOverflowMenuButton:(UIButton *)arg1 {
       if (!cansavefriendsstory) {
@@ -182,24 +215,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %end
 %end
 
-%group QuickOpenPref
-  %hook LSTabBarDataSource
-    - (void)openAppSettingsFromInboxViewController:(UIViewController *)arg1 {
-      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:[MNAUtil isiPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger No Ads Settings ⭐️" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
-        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
-        [arg1 presentViewController:navVC animated:YES completion:nil];
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        %orig;
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-      [arg1 presentViewController:alert animated:YES completion:nil];
-    }
-  %end
-%end
-
 /**
  * Constructor
  */
@@ -209,6 +224,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
   dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
 
+  %init(CommonGroup)
   %init(NoAdsNoStoriesRow);
   %init(DisableReadReceipt);
   %init(DisableTypingIndicator);
@@ -216,6 +232,5 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %init(CanSaveFriendsStory);
   %init(HideSearchBar);
   %init(HidePeopleTab);
-  %init(QuickOpenPref);
 }
 

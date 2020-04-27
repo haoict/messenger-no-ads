@@ -1,6 +1,8 @@
 {
   "APPLY" = "تطبيق";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "هل تريد فعلا اغلاق المسنجر؟";
+  "WELCOME_TO_MESSENGER_NO_ADS" = "مرحبًا بك في Messenger No Ads";
+  "INTRO_TEXT_GUIDE" = "اضغط على صورة ملفك الشخصي في الزاوية العلوية اليسرى من الشاشة للوصول إلى الإعدادات";
   "CONFIRM" = "موافق";
   "CANCEL" = "الغاء";
   "MAIN_PREFERENCES" = "الخصائص الرئيسيه";

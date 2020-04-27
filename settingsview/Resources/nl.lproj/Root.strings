@@ -1,6 +1,8 @@
 {
   "APPLY" = "Toepassen";
   "DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Wil je Messenger echt afsluiten?";
+  "WELCOME_TO_MESSENGER_NO_ADS" = "Welkom bij Messenger No Ads";
+  "INTRO_TEXT_GUIDE" = "Tik op je profielfoto in de linkerbovenhoek van het scherm om toegang te krijgen tot de instellingen";
   "CONFIRM" = "Bevestig";
   "CANCEL" = "Annuleren";
   "MAIN_PREFERENCES" = "Hoofdvoorkeuren";

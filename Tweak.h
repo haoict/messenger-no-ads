@@ -1,10 +1,14 @@
 #import <Foundation/Foundation.h>
 #import "settingsview/MNAUtil.h"
 #import "settingsview/MNASettingsViewController.h"
+#import "settingsview/MNAIntroViewController.h"
 
 @interface LSAppDelegate : NSObject
-+ (id)sharedInstance;
 - (id)getCurrentLoggedInUserId;
++ (id)sharedInstance; // new methods
+@end
+
+@interface MSGSplitViewController : UIViewController
 @end
 
 @interface MBUIStoryViewerAuthorOverlayModel : UIView
@@ -41,6 +45,3 @@
 @interface LSComposerComponentStackView : UIView
 @end
 
-// @interface UIApplication (Custom)
-// - (BOOL)_openURL:(id)arg1 ;
-// @end
