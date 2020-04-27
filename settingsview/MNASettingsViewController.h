@@ -5,10 +5,9 @@
 @interface MNASettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
   UITableView *_tableView;
   NSMutableArray *_tableData;
+  UIView *_headerView;
+  UIImageView *_headerImageView;
+  UILabel *_titleLabel;
+  UIImageView *_iconView;
 }
-
-@property (nonatomic, retain) UIView *headerView;
-@property (nonatomic, retain) UIImageView *headerImageView;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UIImageView *iconView;
 @end

@@ -11,30 +11,30 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[MNAUtil localizedItem:@"APPLY"] style:UIBarButtonItemStylePlain target:self action:@selector(close)];;
   
     self.navigationItem.titleView = [UIView new];
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.titleLabel.text = @TWEAK_TITLE;
-    self.titleLabel.textColor = [UIColor whiteColor];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.navigationItem.titleView addSubview:self.titleLabel];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,10,10)];
+    _titleLabel.font = [UIFont boldSystemFontOfSize:17];
+    _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    _titleLabel.text = @TWEAK_TITLE;
+    _titleLabel.textColor = [UIColor whiteColor];
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.navigationItem.titleView addSubview:_titleLabel];
 
-    self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,10,10)];
-    self.iconView.contentMode = UIViewContentModeScaleAspectFit;
-    self.iconView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"icon@2x.png"]];
-    self.iconView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.iconView.alpha = 0.0;
-    [self.navigationItem.titleView addSubview:self.iconView];
+    _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,10,10)];
+    _iconView.contentMode = UIViewContentModeScaleAspectFit;
+    _iconView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"icon@2x.png"]];
+    _iconView.translatesAutoresizingMaskIntoConstraints = NO;
+    _iconView.alpha = 0.0;
+    [self.navigationItem.titleView addSubview:_iconView];
     
     [NSLayoutConstraint activateConstraints:@[
-      [self.titleLabel.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-      [self.titleLabel.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-      [self.titleLabel.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-      [self.titleLabel.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
-      [self.iconView.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
-      [self.iconView.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
-      [self.iconView.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
-      [self.iconView.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
+      [_titleLabel.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
+      [_titleLabel.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
+      [_titleLabel.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
+      [_titleLabel.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
+      [_iconView.topAnchor constraintEqualToAnchor:self.navigationItem.titleView.topAnchor],
+      [_iconView.leadingAnchor constraintEqualToAnchor:self.navigationItem.titleView.leadingAnchor],
+      [_iconView.trailingAnchor constraintEqualToAnchor:self.navigationItem.titleView.trailingAnchor],
+      [_iconView.bottomAnchor constraintEqualToAnchor:self.navigationItem.titleView.bottomAnchor],
     ]];
   }
   return self;
@@ -96,21 +96,21 @@
   }
 
   // setup table image header
-  self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-  self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-  self.headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
-  self.headerImageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"Banner.jpg"]];
-  self.headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+  _headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+  _headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+  _headerImageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"Banner.jpg"]];
+  _headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
-  [self.headerView addSubview:self.headerImageView];
+  [_headerView addSubview:_headerImageView];
   [NSLayoutConstraint activateConstraints:@[
-    [self.headerImageView.topAnchor constraintEqualToAnchor:self.headerView.topAnchor],
-    [self.headerImageView.leadingAnchor constraintEqualToAnchor:self.headerView.leadingAnchor],
-    [self.headerImageView.trailingAnchor constraintEqualToAnchor:self.headerView.trailingAnchor],
-    [self.headerImageView.bottomAnchor constraintEqualToAnchor:self.headerView.bottomAnchor],
+    [_headerImageView.topAnchor constraintEqualToAnchor:_headerView.topAnchor],
+    [_headerImageView.leadingAnchor constraintEqualToAnchor:_headerView.leadingAnchor],
+    [_headerImageView.trailingAnchor constraintEqualToAnchor:_headerView.trailingAnchor],
+    [_headerImageView.bottomAnchor constraintEqualToAnchor:_headerView.bottomAnchor],
   ]];
 
-  _tableView.tableHeaderView = self.headerView;
+  _tableView.tableHeaderView = _headerView;
 
   // setup table rows
   [self initTableData];
@@ -193,7 +193,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
   // [_tableView reloadData];
-  self.headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+  _headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
 - (void)close {
@@ -205,7 +205,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  tableView.tableHeaderView = self.headerView;
+  tableView.tableHeaderView = _headerView;
   MNACellModel *cellData = [_tableData objectAtIndex:indexPath.row];
 
   NSString *cellIdentifier = [NSString stringWithFormat:@"MNATableViewCell-type%lu-title%@-subtitle%@", cellData.type, cellData.label, cellData.subtitle];
@@ -248,17 +248,17 @@
   CGFloat offsetY = scrollView.contentOffset.y;
   if (offsetY > 200) {
     [UIView animateWithDuration:0.2 animations:^{
-      self.iconView.alpha = 1.0;
-      self.titleLabel.alpha = 0.0;
+      _iconView.alpha = 1.0;
+      _titleLabel.alpha = 0.0;
     }];
   } else {
     [UIView animateWithDuration:0.2 animations:^{
-      self.iconView.alpha = 0.0;
-      self.titleLabel.alpha = 1.0;
+      _iconView.alpha = 0.0;
+      _titleLabel.alpha = 1.0;
     }];
   }
   if (offsetY > 0) offsetY = 0;
-  self.headerImageView.frame = CGRectMake(0, offsetY, self.headerView.frame.size.width, 200 - offsetY);
+  _headerImageView.frame = CGRectMake(0, offsetY, _headerView.frame.size.width, 200 - offsetY);
 }
 
 @end
