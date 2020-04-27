@@ -9,6 +9,8 @@
 @end
 
 @interface MSGSplitViewController : UIViewController
+@property (nonatomic, retain) UIView *sideSwitch; // new property
+@property (nonatomic, retain) UIImageView *imageView; // new property
 @end
 
 @interface MBUIStoryViewerAuthorOverlayModel : UIView
