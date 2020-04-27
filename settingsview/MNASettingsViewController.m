@@ -70,26 +70,35 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // init table view
-  CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-  CGFloat navigationBarHeight = self.navigationController.navigationBar.frame.size.height;
-  CGRect tableFrame;
-  if (self.modalPresentationStyle == UIModalPresentationFullScreen) {
-    tableFrame = CGRectMake(0, statusBarHeight + navigationBarHeight, self.view.frame.size.width, self.view.frame.size.height - statusBarHeight - navigationBarHeight);
-  } else {
-    tableFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - navigationBarHeight);
-  }
+  CGRect tableFrame = self.view.frame;
   _tableView = [[UITableView alloc] initWithFrame:tableFrame];
   _tableView.delegate = self;
   _tableView.dataSource = self;
   _tableView.alwaysBounceVertical = NO;
+  _tableView.translatesAutoresizingMaskIntoConstraints = NO;
   _tableView.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @TABLE_BACKGROUND_COLOR_DARKMODE : @TABLE_BACKGROUND_COLOR];
   [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
   [self.view addSubview:_tableView];
-  
+  if (@available(iOS 11, *)) {
+    [NSLayoutConstraint activateConstraints:@[
+      [_tableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+      [_tableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+      [_tableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+      [_tableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor],
+    ]];
+  } else {
+    [NSLayoutConstraint activateConstraints:@[
+      [_tableView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+      [_tableView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+      [_tableView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor],
+      [_tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+    ]];
+  }
+
   // setup table image header
   self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
   self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-  self.headerImageView.contentMode = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+  self.headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
   self.headerImageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"Banner.jpg"]];
   self.headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -180,6 +189,11 @@
 
   [_tableData addObject:emptyCell];
   [_tableData addObject:footerCell];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+  // [_tableView reloadData];
+  self.headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
 - (void)close {

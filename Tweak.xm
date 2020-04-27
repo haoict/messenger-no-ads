@@ -149,7 +149,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       [alert addAction:otherOptionsAction];
       [alert addAction:cancelAction];
 
-      if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+      if ([MNAUtil isiPad]) {
         [alert setModalPresentationStyle:UIModalPresentationPopover];
         UIPopoverPresentationController *popPresenter = [alert popoverPresentationController];
         popPresenter.sourceView = arg1;
@@ -185,7 +185,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 %group QuickOpenPref
   %hook LSTabBarDataSource
     - (void)openAppSettingsFromInboxViewController:(UIViewController *)arg1 {
-      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
+      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:[MNAUtil isiPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
       [alert addAction:[UIAlertAction actionWithTitle:@"Messenger No Ads Settings ⭐️" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
         UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
