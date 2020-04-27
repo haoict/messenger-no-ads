@@ -80,17 +80,15 @@
 - (void)dismissIntroductionViewController {
   [self dismissViewControllerAnimated:YES completion:nil];
 
-  NSString *plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
-  NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
-
+  NSString *plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
+  NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath] ?: [@{} mutableCopy];
+  NSLog(@"hao--%@-%@", plistPath, settings);
   // flag completed introduction
   [settings setObject:[NSNumber numberWithBool:TRUE] forKey:@"hasCompletedIntroduction"];
-  NSURL *filePath = [NSURL fileURLWithPath:plistPath];
-  NSError *error;
-  BOOL success = [settings writeToURL:filePath error:&error];
+  BOOL success = [settings writeToFile:plistPath atomically:YES];
 
   if (!success) {
-    [MNAUtil showAlertMessage:[NSString stringWithFormat:@"Can't write file: %@", [error localizedDescription]] title:@"Error" viewController:nil];
+    [MNAUtil showAlertMessage:@"Can't write file" title:@"Error" viewController:nil];
   } else {
     notify_post(PREF_CHANGED_NOTIF);
   }

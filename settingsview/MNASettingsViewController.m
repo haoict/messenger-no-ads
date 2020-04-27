@@ -237,7 +237,7 @@
 }
 
 - (void)resetSettings {
-  NSString *plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
+  NSString *plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
   [@{} writeToFile:plistPath atomically:YES];
   [_tableView reloadData];
   notify_post(PREF_CHANGED_NOTIF);

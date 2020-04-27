@@ -17,8 +17,7 @@
   self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
   _cellData = cellData;
   _vc = vc;
-  _plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
-
+  _plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
   if (self) {
     self.textLabel.text = cellData.label;
     self.textLabel.textColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @LABEL_COLOR_DARKMODE : @LABEL_COLOR];
@@ -94,19 +93,17 @@
 - (void)setPreferenceValue:(id)value {
   NSMutableDictionary *settings = [[NSMutableDictionary alloc] initWithContentsOfFile:_plistPath] ?: [@{} mutableCopy];
   [settings setObject:value forKey:_cellData.prefKey];
-  NSURL *filePath = [NSURL fileURLWithPath:_plistPath];
-  NSError *error;
-  BOOL success = [settings writeToURL:filePath error:&error];
+  BOOL success = [settings writeToFile:_plistPath atomically:YES];
 
   if (!success) {
-    [MNAUtil showAlertMessage:[NSString stringWithFormat:@"Can't write file: %@", [error localizedDescription]] title:@"Error" viewController:_vc];
+    [MNAUtil showAlertMessage:@"Can't write file: %@" title:@"Error" viewController:_vc];
   } else {
     notify_post(PREF_CHANGED_NOTIF);
   }
 }
 
 - (id)readPreferenceValueForKey:(NSString *)prefKey {
-  NSDictionary *settings = [[NSDictionary alloc] initWithContentsOfFile:_plistPath];
+  NSDictionary *settings = [[NSDictionary alloc] initWithContentsOfFile:_plistPath] ?: [@{} mutableCopy];
   return settings[prefKey];
 }
 

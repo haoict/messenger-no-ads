@@ -16,8 +16,8 @@ NSString *plistPath;
 NSMutableDictionary *settings;
 
 static void reloadPrefs() {
-  plistPath = [NSString stringWithFormat:@"%@/%@", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0], @PLIST_FILENAME];
-  settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
+  plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
+  settings = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath] ?: [@{} mutableCopy];
 
   hasCompletedIntroduction = [[settings objectForKey:@"hasCompletedIntroduction"] ?: @(NO) boolValue];
   noads = [[settings objectForKey:@"noads"] ?: @(YES) boolValue];
@@ -90,12 +90,10 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     - (void)handleSideSwitchTap:(UITapGestureRecognizer *)recognizer {
       // flag completed introduction
       [settings setObject:[NSNumber numberWithBool:!disablereadreceipt] forKey:@"disablereadreceipt"];
-      NSURL *filePath = [NSURL fileURLWithPath:plistPath];
-      NSError *error;
-      BOOL success = [settings writeToURL:filePath error:&error];
+      BOOL success = [settings writeToFile:plistPath atomically:YES];
 
       if (!success) {
-        [MNAUtil showAlertMessage:[NSString stringWithFormat:@"Can't write file: %@", [error localizedDescription]] title:@"Error" viewController:nil];
+        [MNAUtil showAlertMessage:@"Can't write file" title:@"Error" viewController:nil];
       } else {
         self.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, !disablereadreceipt ? @"no-see.png" : @"see.png"]];
         notify_post(PREF_CHANGED_NOTIF);
