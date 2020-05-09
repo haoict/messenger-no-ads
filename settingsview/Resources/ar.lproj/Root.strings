@@ -15,6 +15,7 @@
   "HIDE_SEARCH_BAR" = "اخفاء شريط البحث - تعمل فقط مع الاصدار 12";
   "HIDE_STORIES_ROW" = "الغاء شريط الحاله";
   "HIDE_PEOPLE_TAB" = "اخفاء ايقونه الاشخاص";
+  "EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "تمديد طول تحميل الفيديو القصة";
   "OTHER_PREFERENCES" = "الاعدادات الاخرى";
   "SHOW_THE_EYE_BUTTON" = "إظهار زر العين";
   "RESET_SETTINGS" = "اعاده ضبط الاعدادات";

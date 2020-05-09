@@ -18,6 +18,7 @@ Here are base strings
 "HIDE_SEARCH_BAR" = "Hide Search Bar (iOS 12 only)";
 "HIDE_STORIES_ROW" = "Hide Stories Row";
 "HIDE_PEOPLE_TAB" = "Hide People Tab";
+"EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "Extend Story Video Upload Length";
 "OTHER_PREFERENCES" = "Other Preferences";
 "RESET_SETTINGS" = "Reset Settings";
 "SUPPORT_ME" = "Support Me";
