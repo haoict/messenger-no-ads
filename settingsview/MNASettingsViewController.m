@@ -150,6 +150,10 @@
   hidePeopleTabSwitchCell.defaultValue = @"false";
   hidePeopleTabSwitchCell.isRestartRequired = TRUE;
 
+  MNACellModel *extendStoryVideoUploadLengthSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"EXTEND_STORY_VIDEO_UPLOAD_LENGTH"]];
+  extendStoryVideoUploadLengthSwitchCell.prefKey = @"extendStoryVideoUploadLength";
+  extendStoryVideoUploadLengthSwitchCell.defaultValue = @"true";
+
   MNACellModel *otherPreferencesCell = [[MNACellModel alloc] initWithType:StaticText withLabel:@" " withSubtitle:[[MNAUtil localizedItem:@"OTHER_PREFERENCES"] uppercaseString]];
   MNACellModel *showTheEyeButtonSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"SHOW_THE_EYE_BUTTON"]];
   showTheEyeButtonSwitchCell.prefKey = @"showTheEyeButton";
@@ -182,6 +186,7 @@
   [_tableData addObject:hideSearchBarSwitchCell];
   [_tableData addObject:hideStoriesRowSwitchCell];
   [_tableData addObject:hidePeopleTabSwitchCell];
+  [_tableData addObject:extendStoryVideoUploadLengthSwitchCell];
 
   [_tableData addObject:otherPreferencesCell];
   [_tableData addObject:showTheEyeButtonSwitchCell];
@@ -248,7 +253,8 @@
   [@{} writeToFile:plistPath atomically:YES];
   [_tableView reloadData];
   notify_post(PREF_CHANGED_NOTIF);
-  [MNAUtil showAlertMessage:nil title:@"Done" viewController:self];
+  // [MNAUtil showAlertMessage:nil title:@"Done" viewController:self];
+  [MNAUtil showRequireRestartAlert:self];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

@@ -15,6 +15,7 @@
   "HIDE_SEARCH_BAR" = "Zoekbalk verbergen (alleen iOS 12)";
   "HIDE_STORIES_ROW" = "Verhalenrij verbergen";
   "HIDE_PEOPLE_TAB" = "Tabblad Personen verbergen";
+  "EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "Verleng de lengte van de uploadvideo van het verhaal";
   "OTHER_PREFERENCES" = "Andere voorkeuren";
   "SHOW_THE_EYE_BUTTON" = "Toon de oogknop";
   "RESET_SETTINGS" = "Instellingen resetten";

@@ -13,6 +13,7 @@ BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
 BOOL showTheEyeButton;
+BOOL extendStoryVideoUploadLength;
 NSString *plistPath;
 NSMutableDictionary *settings;
 
@@ -30,6 +31,7 @@ static void reloadPrefs() {
   hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"] ?: @(NO) boolValue];
   hidepeopletab = [[settings objectForKey:@"hidepeopletab"] ?: @(NO) boolValue];
   showTheEyeButton = [[settings objectForKey:@"showTheEyeButton"] ?: @(YES) boolValue];
+  extendStoryVideoUploadLength = [[settings objectForKey:@"extendStoryVideoUploadLength"] ?: @(YES) boolValue];
 }
 static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
   reloadPrefs();
@@ -307,6 +309,18 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %end
 %end
 
+%group ExtendStoryVideoUploadLength
+  %hook MSGVideoTrimmerPresenter
+    - (id)presentIfPossibleWithNSURL:(id)arg1 videoMaximumDuration:(double)arg2 completion:(id)arg3 {
+      double length = arg2;
+      if (extendStoryVideoUploadLength) {
+        length = 600.0; // 10 mins
+      }
+      return %orig(arg1, length, arg3);
+    }
+  %end
+%end
+
 /**
  * Constructor
  */
@@ -324,5 +338,6 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
   %init(CanSaveFriendsStory);
   %init(HideSearchBar);
   %init(HidePeopleTab);
+  %init(ExtendStoryVideoUploadLength);
 }
 

@@ -1,14 +1,14 @@
-# THEOS_DEVICE_IP = 192.168.1.63
+# THEOS_DEVICE_IP = 192.168.1.45
 
 ARCHS = arm64 arm64e
-TARGET = iphone:clang:12.2:12.0
+TARGET = iphone:clang:12.2:10.0
 
 INSTALL_TARGET_PROCESSES = LightSpeedApp Messenger
 
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = MessengerNoAds
-MessengerNoAds_FILES = Tweak.xm $(wildcard settingsview/*.xm settingsview/*.m)
+MessengerNoAds_FILES = $(wildcard *.xm *.m settingsview/*.xm settingsview/*.m)
 MessengerNoAds_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
