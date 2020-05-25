@@ -1,8 +1,8 @@
 Package: com.haoict.messengernoads
 Name: Messenger No Ads
-Depends: mobilesubstrate, firmware (>= 10)
+Depends: mobilesubstrate, com.haoict.libhdev, firmware (>= 10)
 Conflicts: com.haoict.messengernoads
-Version: 3.4.0
+Version: 3.5.0
 Architecture: iphoneos-arm
 Description: The best tweak for Messenger app.
  The best tweak for Messenger app.

@@ -9,6 +9,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = MessengerNoAds
 MessengerNoAds_FILES = $(wildcard *.xm *.m settingsview/*.xm settingsview/*.m)
+MessengerNoAds_EXTRA_FRAMEWORKS = libhdev
 MessengerNoAds_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk

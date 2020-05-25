@@ -155,7 +155,7 @@
   extendStoryVideoUploadLengthSwitchCell.defaultValue = @"true";
 
   MNACellModel *otherPreferencesCell = [[MNACellModel alloc] initWithType:StaticText withLabel:@" " withSubtitle:[[MNAUtil localizedItem:@"OTHER_PREFERENCES"] uppercaseString]];
-  MNACellModel *showTheEyeButtonSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"SHOW_THE_EYE_BUTTON"]];
+  MNACellModel *showTheEyeButtonSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"SHOW_THE_EYE_BUTTON"] withSubtitle:[MNAUtil localizedItem:@"QUICK_ENABLE_DISABLE_READ_RECEIPT"]];
   showTheEyeButtonSwitchCell.prefKey = @"showTheEyeButton";
   showTheEyeButtonSwitchCell.defaultValue = @"true";
   showTheEyeButtonSwitchCell.isRestartRequired = TRUE;
