@@ -249,20 +249,19 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
         return;
       }
       // check if this story is mine
-      MBUIStoryViewerAuthorOverlayModel *_authorOverlayModel = MSHookIvar<MBUIStoryViewerAuthorOverlayModel *>(self, "_authorOverlayModel");
-      if ([_authorOverlayModel.authorId isEqual:[[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId]]) {
+      if ([self.storyAuthorId isEqualToString:[[%c(LSAppDelegate) sharedInstance] getCurrentLoggedInUserId]]) {
         %orig;
         return;
       }
 
       // otherwise show alert with save and original actions
-      LSStoryOverlayViewController * overlayVC = (LSStoryOverlayViewController *)[[[self nextResponder] nextResponder] nextResponder];
-      LSStoryBucketViewController * bucketVC = overlayVC.parentViewController;
+      LSStoryOverlayViewController *overlayVC = (LSStoryOverlayViewController *)[[[self nextResponder] nextResponder] nextResponder];
+      LSStoryBucketViewController *bucketVC = overlayVC.parentViewController;
       [bucketVC _pauseProgressIndicatorWithReset:FALSE];
 
       UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
       UIAlertAction *saveStoryAction = [UIAlertAction actionWithTitle:@"Save Story" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        LSMediaViewController * mediaVC = bucketVC.currentThreadVC;
+        LSMediaViewController *mediaVC = bucketVC.currentThreadVC;
         [mediaVC saveMedia];
         [bucketVC startTimer];
       }];

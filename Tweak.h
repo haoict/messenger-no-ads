@@ -36,7 +36,7 @@
 @end
 
 @interface LSStoryOverlayProfileView : UIView
-@property(nonatomic) LSStoryOverlayViewController * delegate;
+@property(readonly, copy, nonatomic) NSString *storyAuthorId;
 @end
 
 @interface LSTextView : UITextView
