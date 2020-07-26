@@ -18,7 +18,7 @@
   [gradient setFrame: [[self view] bounds]];
   [gradient setStartPoint:CGPointMake(0.0, -0.5)];
   [gradient setEndPoint:CGPointMake(1.0, 1.0)];
-  [gradient setColors:@[(id)[[MNAUtil colorFromHex:@KTINT_COLOR] CGColor], (id)[[UIColor whiteColor] CGColor]]];
+  [gradient setColors:@[(id)[[HCommon colorFromHex:@KTINT_COLOR] CGColor], (id)[[UIColor whiteColor] CGColor]]];
   [gradient setLocations:@[@0,@1]];
 
   [[[self view] layer] insertSublayer:gradient atIndex:0];
@@ -58,7 +58,7 @@
   UIButton *continueButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.center.x - 125, self.view.frame.size.height * 4 / 5 - 50, 250.0f, 50.0f)];
   [continueButton addTarget:self action:@selector(dismissIntroductionViewController) forControlEvents:UIControlEventTouchUpInside];
   [continueButton setTitle:[MNAUtil localizedItem:@"CONFIRM"] forState:UIControlStateNormal];
-  continueButton.backgroundColor = [MNAUtil colorFromHex:@"#FE2E54"];
+  continueButton.backgroundColor = [HCommon colorFromHex:@"#FE2E54"];
   continueButton.titleLabel.font = [UIFont systemFontOfSize: 17];
   continueButton.layer.cornerRadius = 10;
   [continueButton setTintColor: [UIColor blackColor]];
@@ -87,7 +87,7 @@
   BOOL success = [settings writeToFile:plistPath atomically:YES];
 
   if (!success) {
-    [MNAUtil showAlertMessage:@"Can't write file" title:@"Error" viewController:nil];
+    [HCommon showAlertMessage:@"Can't write file" withTitle:@"Error" viewController:nil];
   } else {
     notify_post(PREF_CHANGED_NOTIF);
   }

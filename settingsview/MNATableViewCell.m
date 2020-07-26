@@ -20,10 +20,10 @@
   _plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
   if (self) {
     self.textLabel.text = cellData.label;
-    self.textLabel.textColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @LABEL_COLOR_DARKMODE : @LABEL_COLOR];
+    self.textLabel.textColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @LABEL_COLOR_DARKMODE : @LABEL_COLOR];
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.detailTextLabel.text = cellData.subtitle;
-    self.detailTextLabel.textColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @SUBTITLE_COLOR_DARKMODE : @SUBTITLE_COLOR];
+    self.detailTextLabel.textColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @SUBTITLE_COLOR_DARKMODE : @SUBTITLE_COLOR];
     if (cellData.disabled) {
       self.userInteractionEnabled = NO;
       self.textLabel.enabled = NO;
@@ -44,7 +44,7 @@
 
       case StaticText: {
         self.textLabel.font=[UIFont systemFontOfSize:STATIC_FONT_SIZE];
-        self.contentView.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @STATIC_BACKGROUND_COLOR_DARKMODE : @STATIC_BACKGROUND_COLOR];
+        self.contentView.backgroundColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @STATIC_BACKGROUND_COLOR_DARKMODE : @STATIC_BACKGROUND_COLOR];
         break;
       }
 
@@ -72,10 +72,10 @@
   [super setHighlighted:highlighted animated:animated];
   if (highlighted) {
     if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
-      self.contentView.superview.backgroundColor = [[MNAUtil colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
+      self.contentView.superview.backgroundColor = [[HCommon colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
     }
   } else {
-    self.contentView.superview.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
+    self.contentView.superview.backgroundColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
   }
 }
 
@@ -83,10 +83,10 @@
   [super setSelected:selected animated:animated];
   if (selected) {
     if (self.selectionStyle != UITableViewCellSelectionStyleNone) {
-      self.contentView.superview.backgroundColor = [[MNAUtil colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
+      self.contentView.superview.backgroundColor = [[HCommon colorFromHex:@KTINT_COLOR] colorWithAlphaComponent:0.3];
     }
   } else {
-    self.contentView.superview.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
+    self.contentView.superview.backgroundColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @CELL_BACKGROUND_COLOR_DARKMODE : @CELL_BACKGROUND_COLOR];
   }
 }
 
@@ -96,7 +96,7 @@
   BOOL success = [settings writeToFile:_plistPath atomically:YES];
 
   if (!success) {
-    [MNAUtil showAlertMessage:@"Can't write file: %@" title:@"Error" viewController:_vc];
+    [HCommon showAlertMessage:@"Can't write file" withTitle:@"Error" viewController:nil];
   } else {
     notify_post(PREF_CHANGED_NOTIF);
 

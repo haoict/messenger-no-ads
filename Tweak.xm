@@ -33,10 +33,6 @@ static void reloadPrefs() {
   showTheEyeButton = [[settings objectForKey:@"showTheEyeButton"] ?: @(YES) boolValue];
   extendStoryVideoUploadLength = [[settings objectForKey:@"extendStoryVideoUploadLength"] ?: @(YES) boolValue];
 }
-static void PreferencesChangedCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-  reloadPrefs();
-}
-
 
 /**
  * Tweak's hooking code
@@ -76,7 +72,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
 
     %new
     - (void)initEyeButton {
-      self.sideSwitch = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, self.view.frame.size.height / 2, 50, 50)];
+      self.sideSwitch = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, self.view.frame.size.height / 2 - 60, 50, 50)];
       self.sideSwitch.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
       self.sideSwitch.layer.cornerRadius = 10;
       self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 30, 30)];
@@ -101,7 +97,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       BOOL success = [settings writeToFile:plistPath atomically:YES];
 
       if (!success) {
-        [MNAUtil showAlertMessage:@"Can't write file" title:@"Error" viewController:nil];
+        [HCommon showAlertMessage:@"Can't write file" withTitle:@"Error" viewController:nil];
       } else {
         self.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, !disablereadreceipt ? @"no-see.png" : @"see.png"]];
         notify_post(PREF_CHANGED_NOTIF);
@@ -109,7 +105,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     }
 
     %new
-    -(void)move:(UIPanGestureRecognizer*)sender {
+    - (void)move:(UIPanGestureRecognizer*)sender {
       // Thanks for this post: https://stackoverflow.com/questions/6672677/how-to-use-uipangesturerecognizer-to-move-object-iphone-ipad
       [self.view bringSubviewToFront:sender.view];
       CGPoint translatedPoint = [sender translationInView:sender.view.superview];
@@ -156,19 +152,37 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
     }
   %end
 
-  %hook LSTabBarDataSource
-    - (void)openAppSettingsFromInboxViewController:(UIViewController *)arg1 {
-      UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:[MNAUtil isiPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger No Ads Settings ⭐️" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
-        UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
-        [arg1 presentViewController:navVC animated:YES completion:nil];
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Messenger Settings" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        %orig;
-      }]];
-      [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-      [arg1 presentViewController:alert animated:YES completion:nil];
+  %hook MSGListBinder
+    %property (nonatomic, assign) BOOL didAddMNACellHeaderView;
+
+    - (id)tableView:(UITableView *)arg1 cellForRowAtIndexPath:(id)arg2 {
+      if (!self.didAddMNACellHeaderView) {
+        NSMutableSet *_registeredReuseIdentifiers = MSHookIvar<NSMutableSet *>(self, "_registeredReuseIdentifiers");
+        if ([_registeredReuseIdentifiers containsObject:@"me_setting_avatar_header"]) {
+          UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 60)];
+          UITableViewCell *mnaCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MNASettings"];
+          mnaCell.textLabel.text = @"Messenger No Ads Settings";
+          mnaCell.textLabel.textColor = [HCommon colorFromHex:@KTINT_COLOR];
+          mnaCell.imageView.image = [UIImage imageNamed:@"/Library/Application Support/MessengerNoAds.bundle/icon.png"];
+          mnaCell.imageView.layer.cornerRadius = mnaCell.imageView.frame.size.width?:30 / 2.0;
+          mnaCell.imageView.layer.masksToBounds = TRUE;
+          mnaCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+          mnaCell.frame = CGRectMake(3, 0, arg1.frame.size.width - 13, mnaCell.frame.size.height);
+          [mnaCell addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMNACellTap:)]];
+          [headerView addSubview:mnaCell];
+
+          arg1.tableHeaderView = headerView;
+          self.didAddMNACellHeaderView = TRUE;
+        }
+      }
+      return %orig;
+    }
+
+    %new
+    - (void)handleMNACellTap:(UITapGestureRecognizer *)recognizer {
+      MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
+      UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
+      [[%c(LSAppDelegate) sharedInstance] presentViewController:navVC animated:true completion:nil];
     }
   %end
 %end
@@ -275,7 +289,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
       [alert addAction:otherOptionsAction];
       [alert addAction:cancelAction];
 
-      if ([MNAUtil isiPad]) {
+      if (IS_iPAD) {
         [alert setModalPresentationStyle:UIModalPresentationPopover];
         UIPopoverPresentationController *popPresenter = [alert popoverPresentationController];
         popPresenter.sourceView = arg1;
@@ -324,7 +338,7 @@ static void PreferencesChangedCallback(CFNotificationCenterRef center, void *obs
  * Constructor
  */
 %ctor {
-  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) PreferencesChangedCallback, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) reloadPrefs, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
 
   dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);

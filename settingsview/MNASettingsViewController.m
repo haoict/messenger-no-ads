@@ -44,11 +44,11 @@
   [super viewWillAppear:animated];
   // set switches color
   UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-  self.view.tintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
-  keyWindow.tintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
-  [UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]].onTintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  self.view.tintColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  keyWindow.tintColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  [UISwitch appearanceWhenContainedInInstancesOfClasses:@[self.class]].onTintColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
   // set navigation bar color
-  self.navigationController.navigationBar.barTintColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
+  self.navigationController.navigationBar.barTintColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @KTINT_COLOR_DARKMODE : @KTINT_COLOR];
   self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
   [self.navigationController.navigationBar setShadowImage: [UIImage new]];
   self.navigationController.navigationController.navigationBar.translucent = NO;
@@ -60,7 +60,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
   [super viewWillDisappear:animated];
   UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-  keyWindow.tintColor = [MNAUtil isDarkMode] ? [UIColor whiteColor] : [UIColor blackColor]; // should be nil for default, but Messenger uses black/white
+  keyWindow.tintColor = [HCommon isDarkMode] ? [UIColor whiteColor] : [UIColor blackColor]; // should be nil for default, but Messenger uses black/white
   self.navigationController.navigationBar.barTintColor = nil;
   self.navigationController.navigationBar.tintColor = nil;
   [self.navigationController.navigationBar setShadowImage:nil];
@@ -76,7 +76,7 @@
   _tableView.dataSource = self;
   _tableView.alwaysBounceVertical = NO;
   _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-  _tableView.backgroundColor = [MNAUtil colorFromHex:[MNAUtil isDarkMode] ? @TABLE_BACKGROUND_COLOR_DARKMODE : @TABLE_BACKGROUND_COLOR];
+  _tableView.backgroundColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @TABLE_BACKGROUND_COLOR_DARKMODE : @TABLE_BACKGROUND_COLOR];
   [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
   [self.view addSubview:_tableView];
   if (@available(iOS 11, *)) {
@@ -98,7 +98,7 @@
   // setup table image header
   _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
   _headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-  _headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+  _headerImageView.contentMode = (IS_iPAD || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
   _headerImageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"Banner.jpg"]];
   _headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -205,7 +205,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
   // [_tableView reloadData];
-  _headerImageView.contentMode = ([MNAUtil isiPad] || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+  _headerImageView.contentMode = (IS_iPAD || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 
 - (void)close {
@@ -253,7 +253,7 @@
   [@{} writeToFile:plistPath atomically:YES];
   [_tableView reloadData];
   notify_post(PREF_CHANGED_NOTIF);
-  // [MNAUtil showAlertMessage:nil title:@"Done" viewController:self];
+  // [HCommon showToastMessage:@"" withTitle:@"Done!" timeout:0.5 viewController:self];
   [MNAUtil showRequireRestartAlert:self];
 }
 

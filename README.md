@@ -44,6 +44,7 @@ Thank you to my friends all around the world who helped me on translation:
 - Michael Basquill  
 - BenCoro  
 - TC@BE  
+- jaildeejung007  
 
 Contributions of any kind welcome!
 

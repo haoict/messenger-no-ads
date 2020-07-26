@@ -1,11 +1,12 @@
 #import <Foundation/Foundation.h>
-#import "settingsview/MNAUtil.h"
+#import <libhdev/HUtilities/HCommon.h>
 #import "settingsview/MNASettingsViewController.h"
 #import "settingsview/MNAIntroViewController.h"
 
 @interface LSAppDelegate : NSObject
-- (id)getCurrentLoggedInUserId;
 + (id)sharedInstance; // new methods
+- (id)getCurrentLoggedInUserId;
+- (void)presentViewController:(id)arg1 animated:(BOOL)arg2 completion:(id)arg3;
 @end
 
 @interface MSGSplitViewController : UIViewController
@@ -48,3 +49,6 @@
 @interface LSComposerComponentStackView : UIView
 @end
 
+@interface MSGListBinder : NSObject <UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
+@property (nonatomic, assign) BOOL didAddMNACellHeaderView;
+@end
