@@ -16,6 +16,7 @@ Not only removing ads but shipped with many nice features
 - Disable Story Seen (see others's stories but they won't know it)
 - Can save friend's story. (Tap ... on top right of story view -> Save)
 - Hide Search Bar (iOS12) / Hide Stories Row / Hide People tab
+- Hide Suggested Contact in Search
 - Extend Story Video Upload Length (from default is 20 seconds to 10 minutes)
 - Support iOS 11 (tested) - 12 (tested) - 13 (tested)
 - Support latest Messenger version (If it doesn't work, you should update the app to latest version >=258.0)

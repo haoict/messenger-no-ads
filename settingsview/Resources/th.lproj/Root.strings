@@ -15,6 +15,7 @@
   "HIDE_SEARCH_BAR" = "ซ่อนแท็บค้นหา (เฉพาะ iOS 12)";
   "HIDE_STORIES_ROW" = "ซ่อนแถบสตอรี่";
   "HIDE_PEOPLE_TAB" = "ซ่อนแท็บผู้คน";
+  "HIDE_SUGGESTED_CONTACT_IN_SEARCH" = "Hide Suggested Contact In Search";
   "EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "เพิ่มความยาวเวลาบันทึกวิดีโอสตอรี่";
   "OTHER_PREFERENCES" = "ตั้งค่าอื่น ๆ";
   "SHOW_THE_EYE_BUTTON" = "แสดงปุ่มดวงตา";

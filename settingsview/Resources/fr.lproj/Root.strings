@@ -15,6 +15,7 @@
   "HIDE_SEARCH_BAR" = "Cacher barre de recherche (iOS12)";
   "HIDE_STORIES_ROW" = "Cacher la rangée des Stories";
   "HIDE_PEOPLE_TAB" = "Cacher l'onglet Personnes";
+  "HIDE_SUGGESTED_CONTACT_IN_SEARCH" = "Hide Suggested Contact In Search";
   "EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "Prolonger la durée de téléchargement de la vidéo de l'histoire";
   "OTHER_PREFERENCES" = "Autres réglages";
   "SHOW_THE_EYE_BUTTON" = "Afficher le bouton oeil";

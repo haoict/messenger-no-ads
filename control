@@ -1,7 +1,7 @@
 Package: com.haoict.messengernoads
 Name: Messenger No Ads
 Depends: mobilesubstrate, com.haoict.libhdev (>= 4.5.0), firmware (>= 10)
-Version: 3.7.0
+Version: 3.8.0
 Architecture: iphoneos-arm
 Description: The best tweak for Messenger app.
  The best tweak for Messenger app.
@@ -13,6 +13,7 @@ Description: The best tweak for Messenger app.
  - Disable Story Seen Receipt
  - Can Save Friend's Story
  - Hide Search Bar, Stories row, People tab
+ - Hide Suggested Contact in Search
  - Extend Story Video Upload Length (from default is 20 seconds to 10 minutes)
  - Support iOS 10 (not tested) - 11 (tested) - 12 (tested) - 13 (tested)
  - Support latest Messenger version (If it doesn't work, you should update the app to latest version >= 258.0)

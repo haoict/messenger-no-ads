@@ -52,3 +52,8 @@
 @interface MSGListBinder : NSObject <UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 @property (nonatomic, assign) BOOL didAddMNACellHeaderView;
 @end
+
+@interface LSContactListViewController : UIViewController {
+  NSString *_featureIdentifier;
+}
+@end

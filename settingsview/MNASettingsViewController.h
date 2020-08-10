@@ -10,5 +10,6 @@
   UIImageView *_headerImageView;
   UILabel *_titleLabel;
   UIImageView *_iconView;
+  NSMutableDictionary *_originalSettings;
 }
 @end

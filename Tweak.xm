@@ -12,6 +12,7 @@ BOOL cansavefriendsstory;
 BOOL hidesearchbar;
 BOOL hidestoriesrow;
 BOOL hidepeopletab;
+BOOL hideSuggestedContactInSearch;
 BOOL showTheEyeButton;
 BOOL extendStoryVideoUploadLength;
 NSString *plistPath;
@@ -30,6 +31,7 @@ static void reloadPrefs() {
   hidesearchbar = [[settings objectForKey:@"hidesearchbar"] ?: @(NO) boolValue];
   hidestoriesrow = [[settings objectForKey:@"hidestoriesrow"] ?: @(NO) boolValue];
   hidepeopletab = [[settings objectForKey:@"hidepeopletab"] ?: @(NO) boolValue];
+  hideSuggestedContactInSearch = [[settings objectForKey:@"hideSuggestedContactInSearch"] ?: @(NO) boolValue];
   showTheEyeButton = [[settings objectForKey:@"showTheEyeButton"] ?: @(YES) boolValue];
   extendStoryVideoUploadLength = [[settings objectForKey:@"extendStoryVideoUploadLength"] ?: @(YES) boolValue];
 }
@@ -182,7 +184,20 @@ static void reloadPrefs() {
     - (void)handleMNACellTap:(UITapGestureRecognizer *)recognizer {
       MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
       UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
+      navVC.modalPresentationStyle = UIModalPresentationFullScreen;
       [[%c(LSAppDelegate) sharedInstance] presentViewController:navVC animated:true completion:nil];
+    }
+  %end
+
+  %hook LSContactListViewController
+    - (void)_updateContactList {
+      if (hideSuggestedContactInSearch) {
+        NSString *_featureIdentifier = MSHookIvar<NSString *>(self, "_featureIdentifier");
+        if ([_featureIdentifier isEqualToString:@"universal_search_null_state"]) {
+          return;
+        }
+      }
+      %orig;
     }
   %end
 %end

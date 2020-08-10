@@ -55,6 +55,8 @@
   [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
   // set status bar text color
   // [UIApplication sharedApplication] 
+
+  _originalSettings = [MNAUtil getCurrentSettingsFromPlist];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -84,7 +86,7 @@
       [_tableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
       [_tableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
       [_tableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-      [_tableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor],
+      [_tableView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
     ]];
   } else {
     [NSLayoutConstraint activateConstraints:@[
@@ -95,12 +97,14 @@
     ]];
   }
 
+
   // setup table image header
   _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
   _headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
   _headerImageView.contentMode = (IS_iPAD || self.view.bounds.size.width > self.view.bounds.size.height) ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
   _headerImageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, @"Banner.jpg"]];
   _headerImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  _headerImageView.clipsToBounds = YES;
 
   [_headerView addSubview:_headerImageView];
   [NSLayoutConstraint activateConstraints:@[
@@ -149,6 +153,10 @@
   hidePeopleTabSwitchCell.prefKey = @"hidepeopletab";
   hidePeopleTabSwitchCell.defaultValue = @"false";
   hidePeopleTabSwitchCell.isRestartRequired = TRUE;
+  MNACellModel *hideSuggestedContactInSearch = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"HIDE_SUGGESTED_CONTACT_IN_SEARCH"]];
+  hideSuggestedContactInSearch.prefKey = @"hideSuggestedContactInSearch";
+  hideSuggestedContactInSearch.defaultValue = @"false";
+  hideSuggestedContactInSearch.isRestartRequired = TRUE;
 
   MNACellModel *extendStoryVideoUploadLengthSwitchCell = [[MNACellModel alloc] initWithType:Switch withLabel:[MNAUtil localizedItem:@"EXTEND_STORY_VIDEO_UPLOAD_LENGTH"]];
   extendStoryVideoUploadLengthSwitchCell.prefKey = @"extendStoryVideoUploadLength";
@@ -186,6 +194,7 @@
   [_tableData addObject:hideSearchBarSwitchCell];
   [_tableData addObject:hideStoriesRowSwitchCell];
   [_tableData addObject:hidePeopleTabSwitchCell];
+  [_tableData addObject:hideSuggestedContactInSearch];
   [_tableData addObject:extendStoryVideoUploadLengthSwitchCell];
 
   [_tableData addObject:otherPreferencesCell];
@@ -209,7 +218,38 @@
 }
 
 - (void)close {
-  [self dismissViewControllerAnimated:YES completion:nil];
+  BOOL isRestartRequired = FALSE;
+  NSMutableDictionary *newSettings = [MNAUtil getCurrentSettingsFromPlist];
+
+  // get diff from original settings with new settings
+  NSDictionary *diff = [MNAUtil compareNSDictionary:_originalSettings withNSDictionary:newSettings];
+  // get all keys array from diff
+  NSArray *diffAllKeys = [diff allKeys];
+
+  if ([diffAllKeys count] > 0) {
+    // check if changed keys has isRestartRequired
+    for (NSString *key in diffAllKeys) {
+      for (MNACellModel *cellModel in _tableData) {
+        if ([key isEqualToString:cellModel.prefKey] && cellModel.isRestartRequired) {
+          isRestartRequired = TRUE;
+        }
+      }
+    }
+  }
+
+  if (isRestartRequired) {
+    // show restart required alert
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:[MNAUtil localizedItem:@"APP_RESTART_REQUIRED"] message:[MNAUtil localizedItem:@"DO_YOU_REALLY_WANT_TO_KILL_MESSENGER"] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:[MNAUtil localizedItem:@"CONFIRM"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+      exit(0);
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:[MNAUtil localizedItem:@"CANCEL"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+      [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+  } else {
+    [self dismissViewControllerAnimated:YES completion:nil];
+  }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -249,12 +289,19 @@
 }
 
 - (void)resetSettings {
-  NSString *plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
-  [@{} writeToFile:plistPath atomically:YES];
-  [_tableView reloadData];
-  notify_post(PREF_CHANGED_NOTIF);
-  // [HCommon showToastMessage:@"" withTitle:@"Done!" timeout:0.5 viewController:self];
-  [MNAUtil showRequireRestartAlert:self];
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Are you sure?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+    NSString *plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
+    [@{} writeToFile:plistPath atomically:YES];
+    [_tableView reloadData];
+    notify_post(PREF_CHANGED_NOTIF);
+    exit(0);
+  }];
+
+  UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+  [alert addAction:confirmAction];
+  [alert addAction:cancelAction];
+  [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {

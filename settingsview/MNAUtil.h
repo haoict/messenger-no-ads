@@ -10,4 +10,7 @@
 @interface MNAUtil : NSObject
 + (NSString *)localizedItem:(NSString *)key;
 + (void)showRequireRestartAlert:(UIViewController *)vc;
++ (NSString *)getPlistPath;
++ (NSMutableDictionary *)getCurrentSettingsFromPlist;
++ (NSDictionary *)compareNSDictionary:(NSDictionary *)d1 withNSDictionary:(NSDictionary *)d2;
 @end

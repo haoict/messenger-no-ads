@@ -17,7 +17,7 @@
   self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
   _cellData = cellData;
   _vc = vc;
-  _plistPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@PLIST_FILENAME];
+  _plistPath = [MNAUtil getPlistPath];
   if (self) {
     self.textLabel.text = cellData.label;
     self.textLabel.textColor = [HCommon colorFromHex:[HCommon isDarkMode] ? @LABEL_COLOR_DARKMODE : @LABEL_COLOR];
@@ -100,9 +100,9 @@
   } else {
     notify_post(PREF_CHANGED_NOTIF);
 
-    if (_cellData.isRestartRequired) {
-      [MNAUtil showRequireRestartAlert:_vc];
-    }
+    // if (_cellData.isRestartRequired) {
+    //   [MNAUtil showRequireRestartAlert:_vc];
+    // }
   }
 }
 
