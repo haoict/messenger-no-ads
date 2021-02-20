@@ -359,7 +359,6 @@ static void reloadPrefs() {
   %end
 %end
 
-static id observer;
 /**
  * Constructor
  */
@@ -367,23 +366,15 @@ static id observer;
   CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback) reloadPrefs, CFSTR(PREF_CHANGED_NOTIF), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
   reloadPrefs();
 
-  // dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
-  observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification
-    object:nil queue:[NSOperationQueue mainQueue]
-    usingBlock:^(NSNotification *notification) {
-      %init(CommonGroup);
-      %init(NoAdsNoStoriesRow);
-      %init(DisableReadReceipt);
-      %init(DisableTypingIndicator);
-      %init(DisableStorySeenReceipt);
-      %init(CanSaveFriendsStory);
-      %init(HideSearchBar);
-      %init(HidePeopleTab);
-      %init(ExtendStoryVideoUploadLength);
-    }
-  ];
-}
+  dlopen([[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"Frameworks/NotInCore.framework/NotInCore"] UTF8String], RTLD_NOW);
 
-%dtor {
-  [[NSNotificationCenter defaultCenter] removeObserver:observer];
+  %init(CommonGroup);
+  %init(NoAdsNoStoriesRow);
+  %init(DisableReadReceipt);
+  %init(DisableTypingIndicator);
+  %init(DisableStorySeenReceipt);
+  %init(CanSaveFriendsStory);
+  %init(HideSearchBar);
+  %init(HidePeopleTab);
+  %init(ExtendStoryVideoUploadLength);
 }

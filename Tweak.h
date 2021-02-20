@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #import <Foundation/Foundation.h>
 #import <libhdev/HUtilities/HCommon.h>
 #import "settingsview/MNASettingsViewController.h"
