@@ -1,5 +1,6 @@
 #include <dlfcn.h>
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <libhdev/HUtilities/HCommon.h>
 #import "settingsview/MNASettingsViewController.h"
 #import "settingsview/MNAIntroViewController.h"
@@ -11,6 +12,12 @@
 @end
 
 @interface MSGSplitViewController : UIViewController
+@property (nonatomic, retain) UIView *sideSwitch; // new property
+@property (nonatomic, retain) UIImageView *imageView; // new property
+- (void)initEyeButton; // new method
+@end
+
+@interface MDSSplitViewController : UIViewController
 @property (nonatomic, retain) UIView *sideSwitch; // new property
 @property (nonatomic, retain) UIImageView *imageView; // new property
 - (void)initEyeButton; // new method

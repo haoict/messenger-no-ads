@@ -154,6 +154,106 @@ static void reloadPrefs() {
     }
   %end
 
+  %hook MDSSplitViewController
+    %property (nonatomic, retain) UIView *sideSwitch;
+    %property (nonatomic, retain) UIImageView *imageView;
+
+    - (void)viewDidAppear:(BOOL)arg1 {
+      %orig;
+      if (!hasCompletedIntroduction) {
+        [self presentViewController:[MNAIntroViewController new] animated:YES completion:nil];
+      }
+    }
+
+    - (void)viewDidLoad {
+      %orig;
+      if (showTheEyeButton) {
+        [self initEyeButton];
+      }
+    }
+
+    %new
+    - (void)initEyeButton {
+      self.sideSwitch = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 50, self.view.frame.size.height / 2 - 60, 50, 50)];
+      self.sideSwitch.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
+      self.sideSwitch.layer.cornerRadius = 10;
+      self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 30, 30)];
+      self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+      self.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, disablereadreceipt ? @"no-see.png" : @"see.png"]];
+      self.imageView.alpha = 0.8;
+      [self.sideSwitch addSubview:self.imageView];
+
+      UITapGestureRecognizer *sideSwitchTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSideSwitchTap:)];
+      [self.sideSwitch addGestureRecognizer:sideSwitchTap];
+      [self.view addSubview:self.sideSwitch];
+
+      UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(move:)];
+      [panRecognizer setMinimumNumberOfTouches:1];
+      [panRecognizer setMaximumNumberOfTouches:1];
+      [self.sideSwitch addGestureRecognizer:panRecognizer];
+    }
+
+    %new
+    - (void)handleSideSwitchTap:(UITapGestureRecognizer *)recognizer {
+      [settings setObject:[NSNumber numberWithBool:!disablereadreceipt] forKey:@"disablereadreceipt"];
+      BOOL success = [settings writeToFile:plistPath atomically:YES];
+
+      if (!success) {
+        [HCommon showAlertMessage:@"Can't write file" withTitle:@"Error" viewController:nil];
+      } else {
+        self.imageView.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", @PREF_BUNDLE_PATH, !disablereadreceipt ? @"no-see.png" : @"see.png"]];
+        notify_post(PREF_CHANGED_NOTIF);
+      }
+    }
+
+    %new
+    - (void)move:(UIPanGestureRecognizer*)sender {
+      // Thanks for this post: https://stackoverflow.com/questions/6672677/how-to-use-uipangesturerecognizer-to-move-object-iphone-ipad
+      [self.view bringSubviewToFront:sender.view];
+      CGPoint translatedPoint = [sender translationInView:sender.view.superview];
+
+      if (sender.state == UIGestureRecognizerStateBegan) {
+        // firstX = sender.view.center.x;
+        // firstY = sender.view.center.y;
+      }
+
+      translatedPoint = CGPointMake(sender.view.center.x+translatedPoint.x, sender.view.center.y+translatedPoint.y);
+
+      [sender.view setCenter:translatedPoint];
+      [sender setTranslation:CGPointZero inView:sender.view];
+
+      if (sender.state == UIGestureRecognizerStateEnded) {
+        CGFloat velocityX = (0.2*[sender velocityInView:self.view].x);
+        CGFloat velocityY = (0.2*[sender velocityInView:self.view].y);
+
+        CGFloat finalX = translatedPoint.x + velocityX;
+        CGFloat finalY = translatedPoint.y + velocityY;
+
+        if (finalX < self.view.frame.size.width / 2) {
+          finalX = 0 + sender.view.frame.size.width / 2;
+        } else {
+          finalX = self.view.frame.size.width - sender.view.frame.size.width / 2;
+        }
+
+        if (finalY < 50) { // to avoid status bar
+          finalY = 50;
+        } else if (finalY > self.view.frame.size.height - 75) { // avoid bottom tab
+          finalY = self.view.frame.size.height - 75;
+        }
+
+        CGFloat animationDuration = (ABS(velocityX)*.0002)+.2;
+
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:animationDuration];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidFinish)];
+        [[sender view] setCenter:CGPointMake(finalX, finalY)];
+        [UIView commitAnimations];
+      }
+    }
+  %end
+
   %hook MSGListBinder
     %property (nonatomic, assign) BOOL didAddMNACellHeaderView;
 
@@ -184,7 +284,9 @@ static void reloadPrefs() {
     - (void)handleMNACellTap:(UITapGestureRecognizer *)recognizer {
       MNASettingsViewController *settingsVC = [[MNASettingsViewController alloc] init];
       UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:settingsVC];
-      navVC.modalPresentationStyle = UIModalPresentationFullScreen;
+      if (![HCommon isNotch]) {
+        navVC.modalPresentationStyle = UIModalPresentationFullScreen;
+      }
       [[%c(LSAppDelegate) sharedInstance] presentViewController:navVC animated:true completion:nil];
     }
   %end

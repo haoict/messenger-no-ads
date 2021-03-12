@@ -1,5 +1,5 @@
 ARCHS = arm64 arm64e
-TARGET = iphone:clang:12.4:10.0
+TARGET = iphone:clang:14.4:12.0
 
 INSTALL_TARGET_PROCESSES = LightSpeedApp Messenger Preferences
 

@@ -57,14 +57,14 @@ Licensed under the [GPLv3 License](./LICENSE), Copyright © 2020-present Hao Ngu
 <details>
   <summary>Click to expand!</summary>
   
-  Add your device IP in `~/.bash_profile` or in project's `Makefile` for faster deployment
+  Add your device IP in `~/.bash_profile` or `~/.zprofile` or in project's `Makefile` for faster deployment
   ```base
-  THEOS_DEVICE_IP = 192.168.1.21
+  THEOS_DEVICE_IP = 192.168.1.12
   ```
 
   Add SSH key for target deploy device so you don't have to enter ssh root password every time
   ```bash
-  cat ~/.ssh/id_rsa.pub | ssh -p 22 root@192.168.1.21 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+  cat ~/.ssh/id_rsa.pub | ssh -p 22 root@192.168.1.12 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
   ```
 
   Build the final package
