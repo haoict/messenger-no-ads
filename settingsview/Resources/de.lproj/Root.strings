@@ -1,0 +1,32 @@
+{
+"APPLY" = "Anwenden";
+"APP_RESTART_REQUIRED" = "App-Neustart erforderlich";
+"BUY_ME_A_COFFEE" = "Kauf mir einen Kaffee";
+"CANCEL" = "Abbrechen";
+"CAN_SAVE_FRIENDS_STORY" = "Story speichern";
+"CONFIRM" = "Bestätigen";
+"DISABLE_READ_RECEIPT" = "Lesebestätigung deaktivieren";
+"DISABLE_STORY_SEEN_RECEIPT" = "Gesehene Story deaktivieren";
+"DISABLE_TYPING_INDICATOR" = "Eingabeanzeige deaktivieren";
+"DONATION" = "Spende 💰";
+"DO_YOU_REALLY_WANT_TO_KILL_MESSENGER" = "Willst du Messenger wirklich neu laden?";
+"EXTEND_STORY_VIDEO_UPLOAD_LENGTH" = "Längere Story-Video";
+"FEATURE_REQUEST" = "Erweiterung anfragen ✨";
+"FOUND_A_BUG" = "Fehler gefunden 🐛";
+"HIDE_PEOPLE_TAB" = "Personen-Tab ausblenden";
+"HIDE_SEARCH_BAR" = "Suchleiste ausblenden (nur iOS 12)";
+"HIDE_STORIES_ROW" = "Story-Zeile ausblenden";
+"HIDE_SUGGESTED_CONTACT_IN_SEARCH" = "Vorgeschlagene Kontakte ausblenden";
+"INTRO_TEXT_GUIDE" = "Tippe auf dein Profilbild in der oberen linken Ecke des Bildschirms, um auf die Einstellungen zuzugreifen.";
+"LEAVE_A_BUG_REPORT_ON_GITHUB" = "Hinterlasse einen Fehlerbericht auf Github";
+"MAIN_PREFERENCES" = "Haupteinstellungen";
+"NO_ADS" = "Keine Werbung";
+"OTHER_PREFERENCES" = "Andere Einstellungen";
+"QUICK_ENABLE_DISABLE_READ_RECEIPT" = "Lesebestätigung schnell aktivieren\/deaktivieren";
+"RESET_SETTINGS" = "Einstellungen zurücksetzen";
+"SEND_ME_AN_EMAIL_WITH_YOUR_REQUEST" = "Sende mir eine E-Mail mit Ihrer Anfrage";
+"SHOW_THE_EYE_BUTTON" = "Zeige die Augen-Taste";
+"SOURCE_CODE" = "Quellcode 🤖";
+"SUPPORT_ME" = "Unterstütze mich";
+"WELCOME_TO_MESSENGER_NO_ADS" = "Willkommen zu Messenger No Ads";
+}
